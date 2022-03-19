@@ -1,3 +1,3 @@
-# Proiect PAO
+# PAO Project
 
-## Etapa I
+Licensed under the GNU General Public License v3.0 or later. See [LICENSE](./LICENSE).
