@@ -2,6 +2,8 @@ package xyz._121407.school_management.gui.users.students;
 
 import xyz._121407.school_management.entities.Student;
 import xyz._121407.school_management.gui.FormPanel;
+import xyz._121407.school_management.repositories.IRepository;
+import xyz._121407.school_management.services.InMemoryStore;
 import xyz._121407.school_management.utils.English;
 
 public class StudentForm extends FormPanel<Student> {
@@ -27,5 +29,10 @@ public class StudentForm extends FormPanel<Student> {
     @Override
     protected String getEntityName() {
         return English.toHumanReadable(Student.class);
+    }
+
+    @Override
+    protected IRepository<Student> getRepository() {
+        return InMemoryStore.getInstance().getStudentRepository();
     }
 }

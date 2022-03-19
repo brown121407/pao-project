@@ -3,6 +3,7 @@ package xyz._121407.school_management.gui.rooms;
 import xyz._121407.school_management.entities.Room;
 import xyz._121407.school_management.entities.RoomType;
 import xyz._121407.school_management.gui.FormPanel;
+import xyz._121407.school_management.repositories.IRepository;
 import xyz._121407.school_management.services.InMemoryStore;
 import xyz._121407.school_management.utils.English;
 
@@ -27,8 +28,6 @@ public class RoomForm extends FormPanel<Room> {
     private JLabel floorLabel = new JLabel();
     private JSpinner floorSpinner = new JSpinner();
 
-    private Integer roomId = null;
-
     public RoomForm() {
         super();
 
@@ -49,12 +48,12 @@ public class RoomForm extends FormPanel<Room> {
         add(typePanel);
 
         nameLabel.setText("Name:");
-        nameField.setColumns(15);
+        nameField.setColumns(DEFAULT_COLUMNS);
         namePanel.add(nameLabel);
         namePanel.add(nameField);
 
         buildingLabel.setText("Building:");
-        buildingField.setColumns(15);
+        buildingField.setColumns(DEFAULT_COLUMNS);
         buildingPanel.add(buildingLabel);
         buildingPanel.add(buildingField);
 
@@ -67,35 +66,6 @@ public class RoomForm extends FormPanel<Room> {
         add(namePanel);
         add(buildingPanel);
         add(floorPanel);
-
-        submitButton.addActionListener(e -> {
-            Room room = getValue();
-            if (roomId != null) {
-                InMemoryStore.getInstance().getRoomRepository().update(room);
-            } else {
-                InMemoryStore.getInstance().getRoomRepository().create(room);
-            }
-
-            if (submitAction != null) {
-                submitAction.accept(room);
-                fill(room);
-            }
-        });
-        submitButton.setText("Submit");
-
-        deleteButton.setText("Delete");
-        deleteButton.setVisible(false);
-        deleteButton.addActionListener(e -> {
-            if (roomId != null) {
-                InMemoryStore.getInstance().getRoomRepository().delete(roomId);
-                clear();
-
-                if (deleteAction != null) {
-                    deleteAction.run();
-                }
-            }
-        });
-
         add(actionsPanel);
     }
 
@@ -107,10 +77,7 @@ public class RoomForm extends FormPanel<Room> {
         buildingField.setText(room.getBuilding());
         floorSpinner.setValue(room.getFloor());
 
-        roomId = room.getId();
-
-        configureStatus(true, room);
-        deleteButton.setVisible(true);
+        super.fill(room);
     }
 
     @Override
@@ -120,10 +87,7 @@ public class RoomForm extends FormPanel<Room> {
         buildingField.setText("");
         floorSpinner.setValue(0);
 
-        roomId = null;
-
-        configureStatus();
-        deleteButton.setVisible(false);
+        super.clear();
     }
 
     @Override
@@ -134,8 +98,8 @@ public class RoomForm extends FormPanel<Room> {
         room.setBuilding(buildingField.getText());
         room.setFloor((Integer) floorSpinner.getValue());
 
-        if (roomId != null) {
-            room.setId(roomId);
+        if (selectedId != null) {
+            room.setId(selectedId);
         }
 
         return room;
@@ -144,5 +108,10 @@ public class RoomForm extends FormPanel<Room> {
     @Override
     protected String getEntityName() {
         return English.toHumanReadable(Room.class);
+    }
+
+    @Override
+    protected IRepository<Room> getRepository() {
+        return InMemoryStore.getInstance().getRoomRepository();
     }
 }

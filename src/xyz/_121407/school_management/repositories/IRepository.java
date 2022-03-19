@@ -11,5 +11,6 @@ public interface IRepository<T extends Identifiable> {
     Set<T> getAll();
     T findFirst(Predicate<T> predicate);
     Set<T> findAll(Predicate<T> predicate);
+    void update(T obj);
     void delete(int id);
 }
