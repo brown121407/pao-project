@@ -1,6 +1,6 @@
 package xyz._121407.school_management.entities;
 
-public abstract class User {
+public abstract class User extends Identifiable {
     private String firstName;
     private String lastName;
     private String username;
