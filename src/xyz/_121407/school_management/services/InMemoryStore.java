@@ -10,7 +10,6 @@ public class InMemoryStore {
     private final Repository<Address> addressRepository = new Repository<>();
     private final Repository<Class> classRepository = new Repository<>();
     private final Repository<Grade> gradeRepository = new Repository<>();
-    private final Repository<HighSchool> highSchoolRepository = new Repository<>();
     private final Repository<Parent> parentRepository = new Repository<>();
     private final Repository<Profile> profileRepository = new Repository<>();
     private final Repository<Room> roomRepository = new Repository<>();
@@ -40,10 +39,6 @@ public class InMemoryStore {
 
     public Repository<Grade> getGradeRepository() {
         return gradeRepository;
-    }
-
-    public Repository<HighSchool> getHighSchoolRepository() {
-        return highSchoolRepository;
     }
 
     public Repository<Parent> getParentRepository() {
