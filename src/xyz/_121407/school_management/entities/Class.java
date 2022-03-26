@@ -2,11 +2,11 @@ package xyz._121407.school_management.entities;
 
 public class Class extends Identifiable {
     private int grade;
-    private char letter;
+    private String letter;
     private Profile profile;
     private Room room;
 
-    private int getGrade() {
+    public int getGrade() {
         return grade;
     }
 
@@ -14,11 +14,11 @@ public class Class extends Identifiable {
         this.grade = grade;
     }
 
-    public char getLetter() {
+    public String getLetter() {
         return letter;
     }
 
-    public void setLetter(char letter) {
+    public void setLetter(String letter) {
         this.letter = letter;
     }
 
@@ -40,6 +40,6 @@ public class Class extends Identifiable {
 
     @Override
     public String toString() {
-        return Integer.toString(grade) + Character.toUpperCase(letter);
+        return grade + letter.toUpperCase();
     }
 }

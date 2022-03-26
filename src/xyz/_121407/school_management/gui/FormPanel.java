@@ -1,14 +1,12 @@
 package xyz._121407.school_management.gui;
 
 import xyz._121407.school_management.entities.Identifiable;
-import xyz._121407.school_management.entities.Room;
 import xyz._121407.school_management.repositories.IRepository;
-import xyz._121407.school_management.services.InMemoryStore;
 
 import javax.swing.*;
 import java.util.function.Consumer;
 
-public abstract class FormPanel<T extends Identifiable> extends JPanel {
+public abstract class FormPanel<T extends Identifiable> extends JPanel implements Refreshable {
     protected static final int DEFAULT_COLUMNS = 15;
 
     protected JLabel statusLabel = new JLabel();
@@ -107,4 +105,23 @@ public abstract class FormPanel<T extends Identifiable> extends JPanel {
             }
         }
     }
+
+    protected JPanel makeFieldPanel(String labelText) {
+        return makeFieldPanel(labelText, null);
+    }
+
+    protected JPanel makeFieldPanel(String labelText, JTextField textField) {
+        JPanel panel = new JPanel();
+        JLabel label = new JLabel(labelText);
+        panel.add(label);
+
+        if (textField != null) {
+            panel.add(textField);
+        }
+
+        return panel;
+    }
+
+    @Override
+    public void refresh() { }
 }

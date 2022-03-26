@@ -13,4 +13,11 @@ public class ClassesPanel extends EntityManagerPanel<Class> {
         configureUI();
         configureFormEvents();
     }
+
+    @Override
+    public void refresh() {
+        super.refresh();
+
+        formPanel.refresh();
+    }
 }

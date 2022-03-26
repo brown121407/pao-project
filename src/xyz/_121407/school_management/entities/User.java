@@ -1,12 +1,12 @@
 package xyz._121407.school_management.entities;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public abstract class User extends Identifiable {
     private String firstName;
     private String lastName;
     private String nationalId;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private Address address;
 
     public String getFirstName() {
@@ -33,11 +33,11 @@ public abstract class User extends Identifiable {
         this.nationalId = nationalId;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -47,5 +47,10 @@ public abstract class User extends Identifiable {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
     }
 }

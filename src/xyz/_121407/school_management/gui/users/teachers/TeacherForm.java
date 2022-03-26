@@ -15,17 +15,28 @@ public class TeacherForm extends UserForm<Teacher> {
 
     @Override
     public void fill(Teacher obj) {
-
+        super.fill(obj);
     }
 
     @Override
     public void clear() {
-
+        super.clear();
     }
 
     @Override
     public Teacher getValue() {
-        return null;
+        var teacher = new Teacher();
+        teacher.setFirstName(firstNameField.getText());
+        teacher.setLastName(lastNameField.getText());
+        teacher.setNationalId(nationalIdField.getText());
+        teacher.setDateOfBirth(dateOfBirthPicker.getDate());
+        teacher.setAddress(addressPicker.getValue());
+
+        if (selectedId != null) {
+            teacher.setId(selectedId);
+        }
+
+        return teacher;
     }
 
     @Override

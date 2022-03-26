@@ -28,16 +28,12 @@ public class MainWindow {
         tabbedPane.add("Rooms", new RoomsPanel());
         tabbedPane.add("Classes", new ClassesPanel());
         tabbedPane.add("Subjects", new SubjectsPanel());
+        tabbedPane.getModel().addChangeListener(e -> {
+            Refreshable comp = (Refreshable) tabbedPane.getSelectedComponent();
+            comp.refresh();
+        });
 
         frame.add(tabbedPane, BorderLayout.CENTER);
-
-//        var panel = new JPanel();
-//        panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 5));
-//
-//        var button = new JButton("Button");
-//        panel.add(button);
-//
-//        frame.add(panel, BorderLayout.NORTH);
 
         frame.setVisible(true);
     }

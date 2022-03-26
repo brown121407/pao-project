@@ -1,7 +1,5 @@
 package xyz._121407.school_management.entities;
 
-import xyz._121407.school_management.utils.English;
-
 public class Address extends Identifiable {
     private String county;
     private String city;

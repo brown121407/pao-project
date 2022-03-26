@@ -14,18 +14,29 @@ public class StudentForm extends UserForm<Student> {
     }
 
     @Override
-    public void fill(Student obj) {
-
+    public void fill(Student student) {
+        super.fill(student);
     }
 
     @Override
     public void clear() {
-
+        super.clear();
     }
 
     @Override
     public Student getValue() {
-        return null;
+        var student = new Student();
+        student.setFirstName(firstNameField.getText());
+        student.setLastName(lastNameField.getText());
+        student.setNationalId(nationalIdField.getText());
+        student.setDateOfBirth(dateOfBirthPicker.getDate());
+        student.setAddress(addressPicker.getValue());
+
+        if (selectedId != null) {
+            student.setId(selectedId);
+        }
+
+        return student;
     }
 
     @Override

@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
 
-public class EntityManagerPanel<T extends Identifiable> extends JPanel {
+public abstract class EntityManagerPanel<T extends Identifiable> extends JPanel implements Refreshable {
     protected IRepository<T> repository;
 
     protected JSplitPane splitPane = new JSplitPane();
@@ -43,7 +43,6 @@ public class EntityManagerPanel<T extends Identifiable> extends JPanel {
         JPanel rightPanel = new JPanel(new BorderLayout());
         rightPanel.add(new JScrollPane(formPanel), BorderLayout.NORTH);
 
-
         splitPane.setLeftComponent(leftPanel);
         splitPane.setRightComponent(rightPanel);
     }
@@ -73,4 +72,7 @@ public class EntityManagerPanel<T extends Identifiable> extends JPanel {
             model.addAll(repository.getAll());
         });
     }
+
+    @Override
+    public void refresh() { }
 }
