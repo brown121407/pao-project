@@ -40,11 +40,9 @@ public abstract class EntityManagerPanel<T extends Identifiable> extends JPanel 
         leftPanel.add(createButton, BorderLayout.NORTH);
         leftPanel.add(new JScrollPane(list), BorderLayout.CENTER);
 
-        JPanel rightPanel = new JPanel(new BorderLayout());
-        rightPanel.add(new JScrollPane(formPanel), BorderLayout.NORTH);
 
         splitPane.setLeftComponent(leftPanel);
-        splitPane.setRightComponent(rightPanel);
+        splitPane.setRightComponent(new JScrollPane(formPanel));
     }
 
     protected void configureFormEvents() {
@@ -74,5 +72,7 @@ public abstract class EntityManagerPanel<T extends Identifiable> extends JPanel 
     }
 
     @Override
-    public void refresh() { }
+    public void refresh() {
+        formPanel.refresh();
+    }
 }

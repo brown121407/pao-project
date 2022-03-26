@@ -4,13 +4,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Teacher extends User {
-    private Set<Subject> subjects = new HashSet<>();
+    private Subject subject;
 
-    public Set<Subject> getSubjects() {
-        return subjects;
+    public Subject getSubject() {
+        return subject;
     }
 
-    public void setSubjects(Set<Subject> subjects) {
-        this.subjects = subjects;
+    public void setSubject(Subject subject) {
+        this.subject = subject;
     }
 }

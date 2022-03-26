@@ -84,14 +84,18 @@ public class ClassForm extends FormPanel<Class> {
     public void refresh() {
         super.refresh();
 
-        comboBoxModel.removeAllElements();
+        roomComboBox.removeAllItems();
 
         var newList = InMemoryStore.getInstance().getRoomRepository().getAll();
         comboBoxModel.addAll(newList);
 
         if (selectedId != null) {
             var selected = newList.stream().filter(x -> x.getId() == selectedId).findFirst();
-            selected.ifPresent(room -> comboBoxModel.setSelectedItem(room));
+            if (selected.isPresent()) {
+                roomComboBox.setSelectedItem(selected.get());
+            } else if (newList.size() > 0) {
+                roomComboBox.setSelectedIndex(0);
+            }
         }
     }
 }
