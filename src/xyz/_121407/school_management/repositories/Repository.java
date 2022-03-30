@@ -2,7 +2,9 @@ package xyz._121407.school_management.repositories;
 
 import xyz._121407.school_management.entities.Identifiable;
 
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -19,6 +21,11 @@ public class Repository<T extends Identifiable> implements IRepository<T> {
     @Override
     public Set<T> getAll() {
         return entities;
+    }
+
+    @Override
+    public List<T> getAllSortedBy(Comparator<T> comparator) {
+        return entities.stream().sorted(comparator).collect(Collectors.toList());
     }
 
     @Override

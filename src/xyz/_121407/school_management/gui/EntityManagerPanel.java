@@ -5,7 +5,9 @@ import xyz._121407.school_management.repositories.IRepository;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Comparator;
 import java.util.OptionalInt;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public abstract class EntityManagerPanel<T extends Identifiable> extends JPanel implements Refreshable {
@@ -21,7 +23,7 @@ public abstract class EntityManagerPanel<T extends Identifiable> extends JPanel 
 
         add(splitPane, BorderLayout.CENTER);
 
-        model.addAll(repository.getAll());
+        model.addAll(repository.getAllSortedBy(Comparator.comparingInt(Identifiable::getId)));
 
         list.setModel(model);
         list.getSelectionModel().addListSelectionListener(e -> {
@@ -50,7 +52,7 @@ public abstract class EntityManagerPanel<T extends Identifiable> extends JPanel 
             list.clearSelection();
 
             model.clear();
-            model.addAll(repository.getAll());
+            model.addAll(repository.getAllSortedBy(Comparator.comparingInt(Identifiable::getId)));
 
             OptionalInt selectedIndex = IntStream.range(0, model.size())
                     .filter(i -> model.get(i).getId() == entity.getId())
@@ -58,16 +60,16 @@ public abstract class EntityManagerPanel<T extends Identifiable> extends JPanel 
 
             if (selectedIndex.isPresent()) {
                 list.setSelectedIndex(selectedIndex.getAsInt());
+            } else {
+                list.setSelectedIndex(0);
             }
-
-            list.setSelectedIndex(entity.getId());
         });
 
         formPanel.onDelete(() -> {
             list.clearSelection();
 
             model.clear();
-            model.addAll(repository.getAll());
+            model.addAll(repository.getAllSortedBy(Comparator.comparingInt(Identifiable::getId)));
         });
     }
 
