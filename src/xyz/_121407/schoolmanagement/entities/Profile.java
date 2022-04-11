@@ -1,6 +1,9 @@
 package xyz._121407.schoolmanagement.entities;
 
-public class Profile extends Identifiable {
+public class Profile implements Identifiable {
+    private static int lastId = 0;
+
+    private int id;
     private ProfileType type;
     private Subject intensive;
 
@@ -18,5 +21,20 @@ public class Profile extends Identifiable {
 
     public void setIntensive(Subject intensive) {
         this.intensive = intensive;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int nextId() {
+        return lastId++;
     }
 }

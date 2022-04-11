@@ -1,6 +1,9 @@
 package xyz._121407.schoolmanagement.entities;
 
-public class Class extends Identifiable {
+public class Class implements Identifiable {
+    private static int lastId = 0;
+
+    private int id;
     private int grade;
     private String letter;
     private Profile profile;
@@ -41,5 +44,20 @@ public class Class extends Identifiable {
     @Override
     public String toString() {
         return grade + letter.toUpperCase();
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int nextId() {
+        return lastId++;
     }
 }

@@ -2,7 +2,10 @@ package xyz._121407.schoolmanagement.entities;
 
 import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
-public class Room extends Identifiable {
+public class Room implements Identifiable {
+    private static int lastId = 0;
+
+    private int id;
     private RoomType roomType;
     private String name;
     private String building;
@@ -43,5 +46,20 @@ public class Room extends Identifiable {
     @Override
     public String toString() {
         return name + " (" + building + ", " + EnglishFormatter.toOrdinal(floor) + " floor)";
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int nextId() {
+        return lastId++;
     }
 }

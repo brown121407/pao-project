@@ -1,6 +1,9 @@
 package xyz._121407.schoolmanagement.entities;
 
-public class Address extends Identifiable {
+public class Address implements Identifiable {
+    private static int lastId = 0;
+
+    private int id;
     private String county;
     private String city;
     private String postcode;
@@ -36,5 +39,20 @@ public class Address extends Identifiable {
 
     public void setStreetLine(String streetLine) {
         this.streetLine = streetLine;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int nextId() {
+        return lastId++;
     }
 }

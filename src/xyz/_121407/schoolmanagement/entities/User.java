@@ -2,7 +2,10 @@ package xyz._121407.schoolmanagement.entities;
 
 import java.time.LocalDate;
 
-public abstract class User extends Identifiable {
+public abstract class User implements Identifiable {
+    private static int lastId = 0;
+
+    private int id;
     private String firstName;
     private String lastName;
     private String nationalId;
@@ -52,5 +55,20 @@ public abstract class User extends Identifiable {
     @Override
     public String toString() {
         return firstName + " " + lastName;
+    }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int nextId() {
+        return lastId++;
     }
 }

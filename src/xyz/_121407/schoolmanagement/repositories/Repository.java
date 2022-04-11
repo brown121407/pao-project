@@ -14,7 +14,7 @@ public class Repository<T extends Identifiable> implements IRepository<T> {
 
     @Override
     public void create(T obj) {
-        obj.setId(Identifiable.nextId());
+        obj.setId(obj.nextId());
         entities.add(obj);
     }
 
