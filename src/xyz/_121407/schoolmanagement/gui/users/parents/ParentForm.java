@@ -4,7 +4,7 @@ import xyz._121407.schoolmanagement.entities.Parent;
 import xyz._121407.schoolmanagement.gui.users.UserForm;
 import xyz._121407.schoolmanagement.repositories.IRepository;
 import xyz._121407.schoolmanagement.services.InMemoryStore;
-import xyz._121407.schoolmanagement.utils.English;
+import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 public class ParentForm extends UserForm<Parent> {
     public ParentForm() {
@@ -41,7 +41,7 @@ public class ParentForm extends UserForm<Parent> {
 
     @Override
     protected String getEntityName() {
-        return English.toHumanReadable(Parent.class);
+        return EnglishFormatter.toHumanReadable(Parent.class);
     }
 
     @Override

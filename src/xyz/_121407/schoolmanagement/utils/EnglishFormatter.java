@@ -1,6 +1,6 @@
 package xyz._121407.schoolmanagement.utils;
 
-public class English {
+public class EnglishFormatter {
     public static String toOrdinal(int cardinal) {
         if (cardinal % 100 < 10 || cardinal % 100 > 19) {
             return cardinal + switch (cardinal % 10) {

@@ -3,7 +3,7 @@ package xyz._121407.schoolmanagement.gui;
 import xyz._121407.schoolmanagement.entities.Address;
 import xyz._121407.schoolmanagement.repositories.IRepository;
 import xyz._121407.schoolmanagement.services.InMemoryStore;
-import xyz._121407.schoolmanagement.utils.English;
+import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
 
@@ -59,7 +59,7 @@ public class AddressPicker extends FormPanel<Address> {
 
     @Override
     protected String getEntityName() {
-        return English.toHumanReadable(Address.class);
+        return EnglishFormatter.toHumanReadable(Address.class);
     }
 
     @Override

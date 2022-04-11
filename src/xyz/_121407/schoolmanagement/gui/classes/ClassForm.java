@@ -5,7 +5,7 @@ import xyz._121407.schoolmanagement.entities.Room;
 import xyz._121407.schoolmanagement.gui.FormPanel;
 import xyz._121407.schoolmanagement.repositories.IRepository;
 import xyz._121407.schoolmanagement.services.InMemoryStore;
-import xyz._121407.schoolmanagement.utils.English;
+import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
 
@@ -72,7 +72,7 @@ public class ClassForm extends FormPanel<Class> {
 
     @Override
     protected String getEntityName() {
-        return English.toHumanReadable(Class.class);
+        return EnglishFormatter.toHumanReadable(Class.class);
     }
 
     @Override

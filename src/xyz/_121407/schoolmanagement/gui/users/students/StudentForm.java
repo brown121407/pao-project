@@ -5,7 +5,7 @@ import xyz._121407.schoolmanagement.entities.Student;
 import xyz._121407.schoolmanagement.gui.users.UserForm;
 import xyz._121407.schoolmanagement.repositories.IRepository;
 import xyz._121407.schoolmanagement.services.InMemoryStore;
-import xyz._121407.schoolmanagement.utils.English;
+import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
 
@@ -61,7 +61,7 @@ public class StudentForm extends UserForm<Student> {
 
     @Override
     protected String getEntityName() {
-        return English.toHumanReadable(Student.class);
+        return EnglishFormatter.toHumanReadable(Student.class);
     }
 
     @Override

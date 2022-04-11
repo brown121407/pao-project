@@ -1,6 +1,6 @@
 package xyz._121407.schoolmanagement.entities;
 
-import xyz._121407.schoolmanagement.utils.English;
+import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 public class Room extends Identifiable {
     private RoomType roomType;
@@ -42,6 +42,6 @@ public class Room extends Identifiable {
 
     @Override
     public String toString() {
-        return name + " (" + building + ", " + English.toOrdinal(floor) + " floor)";
+        return name + " (" + building + ", " + EnglishFormatter.toOrdinal(floor) + " floor)";
     }
 }

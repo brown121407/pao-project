@@ -5,7 +5,7 @@ import xyz._121407.schoolmanagement.entities.RoomType;
 import xyz._121407.schoolmanagement.gui.FormPanel;
 import xyz._121407.schoolmanagement.repositories.IRepository;
 import xyz._121407.schoolmanagement.services.InMemoryStore;
-import xyz._121407.schoolmanagement.utils.English;
+import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -107,7 +107,7 @@ public class RoomForm extends FormPanel<Room> {
 
     @Override
     protected String getEntityName() {
-        return English.toHumanReadable(Room.class);
+        return EnglishFormatter.toHumanReadable(Room.class);
     }
 
     @Override
