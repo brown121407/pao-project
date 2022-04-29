@@ -1,34 +1,32 @@
 package xyz._121407.schoolmanagement.entities;
 
+import xyz._121407.schoolmanagement.annotations.CsvReadable;
+import xyz._121407.schoolmanagement.annotations.CsvWritable;
+
 public class Profile implements Identifiable {
     private static int lastId = 0;
 
     private int id;
-    private ProfileType type;
-    private Subject intensive;
+    private String name;
 
-    public ProfileType getType() {
-        return type;
+    @CsvWritable(field = "name")
+    public String getName() {
+        return name;
     }
 
-    public void setType(ProfileType type) {
-        this.type = type;
-    }
-
-    private Subject getIntensive() {
-        return intensive;
-    }
-
-    public void setIntensive(Subject intensive) {
-        this.intensive = intensive;
+    @CsvReadable(field = "name")
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
+    @CsvWritable(field = "id")
     public int getId() {
         return id;
     }
 
     @Override
+    @CsvReadable(field = "id")
     public void setId(Integer id) {
         this.id = id;
     }
@@ -36,5 +34,10 @@ public class Profile implements Identifiable {
     @Override
     public int nextId() {
         return lastId++;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }
