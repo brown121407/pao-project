@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class EntityWriter {
@@ -23,7 +25,7 @@ public class EntityWriter {
         return instance;
     }
 
-    public <T> void write(T obj) throws IOException {
+    public <T> void writeOne(T obj) throws IOException {
         var writerMethods = Arrays.stream(obj.getClass().getMethods())
                 .filter(m -> m.isAnnotationPresent(CsvWritable.class))
                 // Sort to guarantee same-order serialization
