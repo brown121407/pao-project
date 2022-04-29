@@ -72,8 +72,8 @@ public class EntityReader {
                 entities.add(entity);
             }
         } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            // TODO
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
         return entities;

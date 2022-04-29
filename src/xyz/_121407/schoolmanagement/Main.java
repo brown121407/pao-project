@@ -28,6 +28,8 @@ public class Main {
         } catch (RepositoryException e) {
             System.err.println("A repository failed to do its job. Sorry! Quitting...");
             System.err.println(Arrays.stream(e.getSuppressed()).map(Throwable::getMessage).collect(Collectors.toList()));
+        } catch (RuntimeException e) {
+            System.err.println(e.getMessage());
         }
     }
 
@@ -43,7 +45,6 @@ public class Main {
         serializationConfig.setPath(Parent.class, "parents.csv");
         serializationConfig.setPath(Log.class, "logs.csv");
 
-        // TODO handle IOException
         entityLoader.load();
     }
 }
