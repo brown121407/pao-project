@@ -4,8 +4,6 @@ import xyz._121407.schoolmanagement.annotations.CsvReadable;
 import xyz._121407.schoolmanagement.annotations.CsvWritable;
 
 public class Profile implements Identifiable {
-    private static int lastId = 0;
-
     private int id;
     private String name;
 
@@ -29,11 +27,6 @@ public class Profile implements Identifiable {
     @CsvReadable(field = "id")
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    @Override
-    public int nextId() {
-        return lastId++;
     }
 
     @Override

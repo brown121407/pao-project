@@ -5,8 +5,6 @@ import xyz._121407.schoolmanagement.annotations.CsvWritable;
 import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 public class Room implements Identifiable {
-    private static int lastId = 0;
-
     private int id;
     private RoomType roomType;
     private String name;
@@ -68,10 +66,5 @@ public class Room implements Identifiable {
     @CsvReadable(field = "id")
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    @Override
-    public int nextId() {
-        return lastId++;
     }
 }
