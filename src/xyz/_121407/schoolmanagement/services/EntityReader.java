@@ -4,6 +4,8 @@ import xyz._121407.schoolmanagement.annotations.CsvReadable;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +26,10 @@ public class EntityReader {
     public <T> List<T> read(Class<T> klass) throws IOException {
         var entities = new ArrayList<T>();
         var path = SerializationConfig.getInstance().getPath(klass);
+
+        if (!Files.exists(Path.of(path))) {
+            return entities;
+        }
 
         try (var reader = new BufferedReader(new FileReader(path))) {
             var header = reader.readLine().split(SerializationConfig.getInstance().getDelimiter());
