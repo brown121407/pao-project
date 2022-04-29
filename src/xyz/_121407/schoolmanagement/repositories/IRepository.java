@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 public interface IRepository<T extends Identifiable> {
+    void seed(List<T> entities);
     void create(T obj);
     Set<T> getAll();
     List<T> getAllSortedBy(Comparator<T> comparator);
