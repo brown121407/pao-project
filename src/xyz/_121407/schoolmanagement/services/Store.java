@@ -8,18 +8,24 @@ import xyz._121407.schoolmanagement.repositories.Repository;
 import java.util.HashMap;
 import java.util.Map;
 
-public class InMemoryStore {
-    private static InMemoryStore instance;
+public class Store {
+    private static Store instance;
 
     private final Map<java.lang.Class<?>, IRepository<Identifiable>> repositoryMap = new HashMap<>();
 
-    private InMemoryStore() {
+    private Store() {
         repositoryMap.put(Subject.class, new Repository<>());
+        repositoryMap.put(Profile.class, new Repository<>());
+        repositoryMap.put(Room.class, new Repository<>());
+        repositoryMap.put(Class.class, new Repository<>());
+        repositoryMap.put(Student.class, new Repository<>());
+        repositoryMap.put(Teacher.class, new Repository<>());
+        repositoryMap.put(Parent.class, new Repository<>());
     }
 
-    public static InMemoryStore getInstance() {
+    public static Store getInstance() {
         if (instance == null) {
-            instance = new InMemoryStore();
+            instance = new Store();
         }
 
         return instance;

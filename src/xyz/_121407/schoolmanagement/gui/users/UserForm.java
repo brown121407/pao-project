@@ -14,8 +14,8 @@ public abstract class UserForm<T extends User> extends FormPanel<T> {
     protected final DatePicker dateOfBirthPicker = new DatePicker();
     protected final AddressPicker addressPicker = new AddressPicker();
 
-    public UserForm() {
-        super();
+    protected UserForm(Class<T> klass) {
+        super(klass);
 
         JPanel firstNamePanel = makeFieldPanel("First name:", firstNameField);
 

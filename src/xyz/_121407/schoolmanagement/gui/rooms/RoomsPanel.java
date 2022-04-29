@@ -2,12 +2,11 @@ package xyz._121407.schoolmanagement.gui.rooms;
 
 import xyz._121407.schoolmanagement.entities.Room;
 import xyz._121407.schoolmanagement.gui.EntityManagerPanel;
-import xyz._121407.schoolmanagement.services.InMemoryStore;
+import xyz._121407.schoolmanagement.services.Store;
 
 public class RoomsPanel extends EntityManagerPanel<Room> {
     public RoomsPanel() {
-        formPanel = new RoomForm();
-        repository = InMemoryStore.getInstance().getRoomRepository();
+        super(Room.class, new RoomForm());
 
         configureUI();
         configureFormEvents();

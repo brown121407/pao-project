@@ -4,7 +4,7 @@ import xyz._121407.schoolmanagement.entities.Class;
 import xyz._121407.schoolmanagement.entities.Room;
 import xyz._121407.schoolmanagement.gui.FormPanel;
 import xyz._121407.schoolmanagement.repositories.IRepository;
-import xyz._121407.schoolmanagement.services.InMemoryStore;
+import xyz._121407.schoolmanagement.services.Store;
 import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
@@ -16,7 +16,7 @@ public class ClassForm extends FormPanel<Class> {
     DefaultComboBoxModel<Room> comboBoxModel = new DefaultComboBoxModel<>();
 
     public ClassForm() {
-        super();
+        super(Class.class);
 
         var gradePanel = makeFieldPanel("Grade:");
         SpinnerModel model = new SpinnerNumberModel(5, 5, 13, 1);
@@ -26,7 +26,7 @@ public class ClassForm extends FormPanel<Class> {
         var letterPanel = makeFieldPanel("Letter:", letterField);
 
         var roomPanel = makeFieldPanel("Room:");
-        comboBoxModel.addAll(InMemoryStore.getInstance().getRoomRepository().getAll());
+        comboBoxModel.addAll(Store.getInstance().get(Room.class).getAll());
         roomComboBox.setModel(comboBoxModel);
         roomPanel.add(roomComboBox);
 
@@ -71,22 +71,12 @@ public class ClassForm extends FormPanel<Class> {
     }
 
     @Override
-    protected String getEntityName() {
-        return EnglishFormatter.toHumanReadable(Class.class);
-    }
-
-    @Override
-    protected IRepository<Class> getRepository() {
-        return InMemoryStore.getInstance().getClassRepository();
-    }
-
-    @Override
     public void refresh() {
         super.refresh();
 
         roomComboBox.removeAllItems();
 
-        var newList = InMemoryStore.getInstance().getRoomRepository().getAll();
+        var newList = Store.getInstance().get(Room.class).getAll();
         comboBoxModel.addAll(newList);
 
         if (selectedId != null) {

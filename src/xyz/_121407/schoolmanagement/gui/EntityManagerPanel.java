@@ -2,6 +2,7 @@ package xyz._121407.schoolmanagement.gui;
 
 import xyz._121407.schoolmanagement.entities.Identifiable;
 import xyz._121407.schoolmanagement.repositories.IRepository;
+import xyz._121407.schoolmanagement.services.Store;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,6 +17,11 @@ public abstract class EntityManagerPanel<T extends Identifiable> extends JPanel 
     protected JList<T> list = new JList<>();
     protected DefaultListModel<T> model = new DefaultListModel<>();
     protected FormPanel<T> formPanel;
+
+    public EntityManagerPanel(Class<T> klass, FormPanel<T> formPanel) {
+        repository = Store.getInstance().get(klass);
+        this.formPanel = formPanel;
+    }
 
     protected void configureUI() {
         setLayout(new BorderLayout());

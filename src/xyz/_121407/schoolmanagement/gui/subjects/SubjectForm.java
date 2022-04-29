@@ -3,7 +3,7 @@ package xyz._121407.schoolmanagement.gui.subjects;
 import xyz._121407.schoolmanagement.entities.Subject;
 import xyz._121407.schoolmanagement.gui.FormPanel;
 import xyz._121407.schoolmanagement.repositories.IRepository;
-import xyz._121407.schoolmanagement.services.InMemoryStore;
+import xyz._121407.schoolmanagement.services.Store;
 import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
@@ -12,7 +12,7 @@ public class SubjectForm extends FormPanel<Subject> {
     private final JTextField nameField = new JTextField();
 
     public SubjectForm() {
-        super();
+        super(Subject.class);
 
         JPanel namePanel = new JPanel();
         JLabel nameLabel = new JLabel("Name: ");
@@ -48,15 +48,5 @@ public class SubjectForm extends FormPanel<Subject> {
         }
 
         return subject;
-    }
-
-    @Override
-    protected String getEntityName() {
-        return EnglishFormatter.toHumanReadable(Subject.class);
-    }
-
-    @Override
-    protected IRepository<Subject> getRepository() {
-        return InMemoryStore.getInstance().getSubjectRepository();
     }
 }

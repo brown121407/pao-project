@@ -2,7 +2,7 @@ package xyz._121407.schoolmanagement.gui;
 
 import xyz._121407.schoolmanagement.entities.Address;
 import xyz._121407.schoolmanagement.repositories.IRepository;
-import xyz._121407.schoolmanagement.services.InMemoryStore;
+import xyz._121407.schoolmanagement.services.Store;
 import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
@@ -14,6 +14,8 @@ public class AddressPicker extends FormPanel<Address> {
     private JTextField streetLineField = new JTextField(DEFAULT_COLUMNS);
 
     public AddressPicker() {
+        super(Address.class);
+
         JPanel countyPanel = makeFieldPanel("County:", countyField);
         JPanel cityPanel = makeFieldPanel("City:", cityField);
         JPanel postCodePanel = makeFieldPanel("Post code:", postCodeField);
@@ -55,15 +57,5 @@ public class AddressPicker extends FormPanel<Address> {
         cityField.setText("");
         postCodeField.setText("");
         streetLineField.setText("");
-    }
-
-    @Override
-    protected String getEntityName() {
-        return EnglishFormatter.toHumanReadable(Address.class);
-    }
-
-    @Override
-    protected IRepository<Address> getRepository() {
-        return InMemoryStore.getInstance().getAddressRepository();
     }
 }
