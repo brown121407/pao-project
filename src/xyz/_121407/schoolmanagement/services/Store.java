@@ -20,6 +20,7 @@ public class Store {
         repositoryMap.put(Room.class, new CsvBackedRepository<>());
         repositoryMap.put(Class.class, new CsvBackedRepository<>());
         repositoryMap.put(Student.class, new Repository<>());
+        repositoryMap.put(Address.class, new CsvBackedRepository<>());
         repositoryMap.put(Teacher.class, new Repository<>());
         repositoryMap.put(Parent.class, new Repository<>());
     }

@@ -26,6 +26,7 @@ public class Main {
         serializationConfig.setPath(Profile.class, "profiles.csv");
         serializationConfig.setPath(Room.class, "rooms.csv");
         serializationConfig.setPath(Class.class, "classes.csv");
+        serializationConfig.setPath(Address.class, "addresses.csv");
         serializationConfig.setPath(Student.class, "students.csv");
         serializationConfig.setPath(Teacher.class, "teachers.csv");
         serializationConfig.setPath(Parent.class, "parents.csv");
