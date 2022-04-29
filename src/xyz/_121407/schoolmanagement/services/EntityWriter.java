@@ -8,12 +8,13 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class EntityWriter {
     private static EntityWriter instance;
+
+    private final SerializationConfig serializationConfig = SerializationConfig.getInstance();
 
     private EntityWriter() {}
 
@@ -25,6 +26,19 @@ public class EntityWriter {
         return instance;
     }
 
+    public <T> void writeAll(Set<T> objs) throws IOException {
+        if (objs.size() == 0) {
+            return;
+        }
+
+        // Empty file
+        new FileWriter(serializationConfig.getPath(objs.toArray()[0].getClass())).close();
+
+        for (var obj : objs) {
+            writeOne(obj);
+        }
+    }
+
     public <T> void writeOne(T obj) throws IOException {
         var writerMethods = Arrays.stream(obj.getClass().getMethods())
                 .filter(m -> m.isAnnotationPresent(CsvWritable.class))
@@ -32,14 +46,14 @@ public class EntityWriter {
                 .sorted(Comparator.comparing(m -> m.getAnnotation(CsvWritable.class).field()))
                 .toList();
 
-        var file = new File(SerializationConfig.getInstance().getPath(obj.getClass()));
+        var file = new File(serializationConfig.getPath(obj.getClass()));
         var writer = new FileWriter(file, true);
 
         if (file.length() == 0) {
             System.out.println(file.length());
             var header = writerMethods.stream()
                     .map(m -> m.getAnnotation(CsvWritable.class).field())
-                    .collect(Collectors.joining(SerializationConfig.getInstance().getDelimiter()));
+                    .collect(Collectors.joining(serializationConfig.getDelimiter()));
             writer.append(header);
             writer.append('\n');
         }
@@ -51,7 +65,7 @@ public class EntityWriter {
                 e.printStackTrace();
                 return "ERROR: " + e.getMessage();
             }
-        }).collect(Collectors.joining(SerializationConfig.getInstance().getDelimiter()));
+        }).collect(Collectors.joining(serializationConfig.getDelimiter()));
 
         writer.append(row);
         writer.append('\n');
