@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Repository<T extends Identifiable> implements IRepository<T> {
-    private Set<T> entities = new HashSet<>();
+    protected Set<T> entities = new HashSet<>();
 
     public void seed(List<T> entities) {
         this.entities = new HashSet<>(entities);

@@ -2,6 +2,7 @@ package xyz._121407.schoolmanagement.services;
 
 import xyz._121407.schoolmanagement.entities.*;
 import xyz._121407.schoolmanagement.entities.Class;
+import xyz._121407.schoolmanagement.repositories.CsvBackedRepository;
 import xyz._121407.schoolmanagement.repositories.IRepository;
 import xyz._121407.schoolmanagement.repositories.Repository;
 
@@ -14,10 +15,10 @@ public class Store {
     private final Map<java.lang.Class<?>, IRepository<Identifiable>> repositoryMap = new HashMap<>();
 
     private Store() {
-        repositoryMap.put(Subject.class, new Repository<>());
-        repositoryMap.put(Profile.class, new Repository<>());
-        repositoryMap.put(Room.class, new Repository<>());
-        repositoryMap.put(Class.class, new Repository<>());
+        repositoryMap.put(Subject.class, new CsvBackedRepository<>());
+        repositoryMap.put(Profile.class, new CsvBackedRepository<>());
+        repositoryMap.put(Room.class, new CsvBackedRepository<>());
+        repositoryMap.put(Class.class, new CsvBackedRepository<>());
         repositoryMap.put(Student.class, new Repository<>());
         repositoryMap.put(Teacher.class, new Repository<>());
         repositoryMap.put(Parent.class, new Repository<>());
