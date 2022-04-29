@@ -1,9 +1,7 @@
 package xyz._121407.schoolmanagement.services;
 
+import xyz._121407.schoolmanagement.entities.*;
 import xyz._121407.schoolmanagement.entities.Class;
-import xyz._121407.schoolmanagement.entities.Profile;
-import xyz._121407.schoolmanagement.entities.Room;
-import xyz._121407.schoolmanagement.entities.Subject;
 
 import java.io.IOException;
 
@@ -43,5 +41,20 @@ public class EntityLoader {
         }
 
         store.get(Class.class).seed(classes);
+
+        var addresses = reader.read(Address.class);
+        store.get(Address.class).seed(addresses);
+
+        var students = reader.read(Student.class);
+
+        for (var student : students) {
+            var klass = store.get(Class.class).findFirst(x -> x.getId() == student.getClassId());
+            var address = store.get(Address.class).findFirst(x -> x.getId() == student.getAddressId());
+
+            student.setKlass(klass);
+            student.setAddress(address);
+        }
+
+        store.get(Student.class).seed(students);
     }
 }

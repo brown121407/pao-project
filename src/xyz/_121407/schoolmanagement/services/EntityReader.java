@@ -32,7 +32,12 @@ public class EntityReader {
         }
 
         try (var reader = new BufferedReader(new FileReader(path))) {
-            var header = reader.readLine().split(SerializationConfig.getInstance().getDelimiter());
+            var headerLine = reader.readLine();
+            if (headerLine == null) {
+                return entities;
+            }
+
+            var header = headerLine.split(SerializationConfig.getInstance().getDelimiter());
 
             String line;
             while ((line = reader.readLine()) != null) {

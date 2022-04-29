@@ -50,7 +50,6 @@ public class EntityWriter {
         var writer = new FileWriter(file, true);
 
         if (file.length() == 0) {
-            System.out.println(file.length());
             var header = writerMethods.stream()
                     .map(m -> m.getAnnotation(CsvWritable.class).field())
                     .collect(Collectors.joining(serializationConfig.getDelimiter()));

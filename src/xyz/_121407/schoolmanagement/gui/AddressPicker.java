@@ -8,10 +8,10 @@ import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 import javax.swing.*;
 
 public class AddressPicker extends FormPanel<Address> {
-    private JTextField countyField = new JTextField(DEFAULT_COLUMNS);
-    private JTextField cityField = new JTextField(DEFAULT_COLUMNS);
-    private JTextField postCodeField = new JTextField(DEFAULT_COLUMNS);
-    private JTextField streetLineField = new JTextField(DEFAULT_COLUMNS);
+    private final JTextField countyField = new JTextField(DEFAULT_COLUMNS);
+    private final JTextField cityField = new JTextField(DEFAULT_COLUMNS);
+    private final JTextField postCodeField = new JTextField(DEFAULT_COLUMNS);
+    private final JTextField streetLineField = new JTextField(DEFAULT_COLUMNS);
 
     public AddressPicker() {
         super(Address.class);
@@ -35,6 +35,10 @@ public class AddressPicker extends FormPanel<Address> {
         address.setCity(cityField.getText());
         address.setPostcode(postCodeField.getText());
         address.setStreetLine(streetLineField.getText());
+
+        if (selectedId != null) {
+            address.setId(selectedId);
+        }
 
         return address;
     }
