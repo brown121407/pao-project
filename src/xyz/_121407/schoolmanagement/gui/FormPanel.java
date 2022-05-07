@@ -82,27 +82,35 @@ public abstract class FormPanel<T extends Identifiable> extends JPanel implement
     }
 
     protected void defaultSubmitAction() {
-        T obj = getValue();
-        if (selectedId != null) {
-            repository.update(obj);
-        } else {
-            repository.create(obj);
-        }
+        try {
+            T obj = getValue();
+            if (selectedId != null) {
+                repository.update(obj);
+            } else {
+                repository.create(obj);
+            }
 
-        if (submitAction != null) {
-            fill(obj);
-            submitAction.accept(obj);
+            if (submitAction != null) {
+                fill(obj);
+                submitAction.accept(obj);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Failed to create object. Please check that you filled all the fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     protected void defaultDeleteAction() {
-        if (selectedId != null) {
-            repository.delete(selectedId);
-            clear();
+        try {
+            if (selectedId != null) {
+                repository.delete(selectedId);
+                clear();
 
-            if (deleteAction != null) {
-                deleteAction.run();
+                if (deleteAction != null) {
+                    deleteAction.run();
+                }
             }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Failed to delete object. Reason: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

@@ -12,6 +12,13 @@ import java.io.IOException;
 public class CsvBackedRepository<T extends Identifiable> extends Repository<T> {
     private final EntityWriter writer = EntityWriter.getInstance();
     private final Logger logger = Logger.getInstance();
+    private final Class<T> entityClass;
+
+    public CsvBackedRepository(Class<?> klass) {
+        super();
+
+        entityClass = (Class<T>) klass;
+    }
 
     @Override
     public void create(T obj) {
@@ -20,14 +27,14 @@ public class CsvBackedRepository<T extends Identifiable> extends Repository<T> {
         try {
             writer.writeOne(obj);
         } catch (IOException exception) {
-            logger.log(ActionType.ERROR, "Failed to create a " + EnglishFormatter.toHumanReadable(obj.getClass()));
+            logger.log(ActionType.ERROR, "Failed to create a " + EnglishFormatter.toHumanReadable(entityClass));
 
             var repoEx = new RepositoryException();
             repoEx.addSuppressed(exception);
             throw repoEx;
         }
 
-        logger.log(ActionType.CREATE, "Created a " + EnglishFormatter.toHumanReadable(obj.getClass()));
+        logger.log(ActionType.CREATE, "Created a " + EnglishFormatter.toHumanReadable(entityClass));
     }
 
     @Override
@@ -35,10 +42,10 @@ public class CsvBackedRepository<T extends Identifiable> extends Repository<T> {
         super.update(obj);
 
         try {
-            writer.writeAll(entities);
+            writer.writeAll(entityClass, entities);
         } catch (IOException exception) {
             logger.log(ActionType.ERROR, "Failed to update the "
-                    + EnglishFormatter.toHumanReadable(obj.getClass())
+                    + EnglishFormatter.toHumanReadable(entityClass)
                     + " with ID " + obj.getId());
 
             var repoEx = new RepositoryException();
@@ -47,7 +54,7 @@ public class CsvBackedRepository<T extends Identifiable> extends Repository<T> {
         }
 
         logger.log(ActionType.UPDATE, "Updated the "
-                + EnglishFormatter.toHumanReadable(obj.getClass())
+                + EnglishFormatter.toHumanReadable(entityClass)
                 + " with ID " + obj.getId());
     }
 
@@ -56,16 +63,20 @@ public class CsvBackedRepository<T extends Identifiable> extends Repository<T> {
         super.delete(id);
 
         try {
-            writer.writeAll(entities);
+            writer.writeAll(entityClass, entities);
         } catch (IOException exception) {
-            logger.log(ActionType.ERROR, "Failed to delete an object with ID " + id);
+            logger.log(ActionType.ERROR, "Failed to delete the "
+                    + EnglishFormatter.toHumanReadable(entityClass)
+                    + " with ID " + id);
 
             var repoEx = new RepositoryException();
             repoEx.addSuppressed(exception);
             throw repoEx;
         }
 
-        // TODO: Find a way to get class from Set<T>
+        logger.log(ActionType.UPDATE, "Updated the "
+                + EnglishFormatter.toHumanReadable(entityClass)
+                + " with ID " + id);
         logger.log(ActionType.DELETE, "Deleted an object with ID " + id);
     }
 }

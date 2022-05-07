@@ -15,12 +15,12 @@ public class Store {
     private final Map<java.lang.Class<?>, IRepository<Identifiable>> repositoryMap = new HashMap<>();
 
     private Store() {
-        repositoryMap.put(Subject.class, new CsvBackedRepository<>());
-        repositoryMap.put(Profile.class, new CsvBackedRepository<>());
-        repositoryMap.put(Room.class, new CsvBackedRepository<>());
-        repositoryMap.put(Class.class, new CsvBackedRepository<>());
-        repositoryMap.put(Address.class, new CsvBackedRepository<>());
-        repositoryMap.put(Student.class, new CsvBackedRepository<>());
+        repositoryMap.put(Subject.class, new CsvBackedRepository<>(Subject.class));
+        repositoryMap.put(Profile.class, new CsvBackedRepository<>(Profile.class));
+        repositoryMap.put(Room.class, new CsvBackedRepository<>(Room.class));
+        repositoryMap.put(Class.class, new CsvBackedRepository<>(Class.class));
+        repositoryMap.put(Address.class, new CsvBackedRepository<>(Address.class));
+        repositoryMap.put(Student.class, new CsvBackedRepository<>(Student.class));
         repositoryMap.put(Teacher.class, new Repository<>());
         repositoryMap.put(Parent.class, new Repository<>());
     }

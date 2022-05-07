@@ -26,13 +26,9 @@ public class EntityWriter {
         return instance;
     }
 
-    public <T> void writeAll(Set<T> objs) throws IOException {
-        if (objs.size() == 0) {
-            return;
-        }
-
+    public <T> void writeAll(Class<T> klass, Set<T> objs) throws IOException {
         // Empty file
-        new FileWriter(serializationConfig.getPath(objs.toArray()[0].getClass())).close();
+        new FileWriter(serializationConfig.getPath(klass)).close();
 
         for (var obj : objs) {
             writeOne(obj);

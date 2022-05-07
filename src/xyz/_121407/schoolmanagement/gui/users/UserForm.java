@@ -46,35 +46,44 @@ public abstract class UserForm<T extends User> extends FormPanel<T> {
         }
 
         submitButton.addActionListener(e -> {
-            T obj = getValue();
+            try {
+                T obj = getValue();
 
-            var address = obj.getAddress();
+                var address = obj.getAddress();
 
-            if (selectedId != null) {
-                Store.getInstance().get(Address.class).update(address);
-                repository.update(obj);
-            } else {
-                Store.getInstance().get(Address.class).create(address);
-                obj.setAddressId(address.getId());
-                repository.create(obj);
-            }
+                if (selectedId != null) {
+                    Store.getInstance().get(Address.class).update(address);
+                    repository.update(obj);
+                } else {
+                    Store.getInstance().get(Address.class).create(address);
+                    obj.setAddressId(address.getId());
+                    repository.create(obj);
+                }
 
-            if (submitAction != null) {
-                fill(obj);
-                submitAction.accept(obj);
+                if (submitAction != null) {
+                    fill(obj);
+                    submitAction.accept(obj);
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Failed to create object. Please check that you filled all the fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
         deleteButton.addActionListener(e -> {
-            if (selectedId != null) {
-                var address = addressPicker.getValue();
-                repository.delete(selectedId);
-                Store.getInstance().get(Address.class).delete(address.getId());
-                clear();
+            try {
+                if (selectedId != null) {
+                    var address = addressPicker.getValue();
+                    repository.delete(selectedId);
+                    Store.getInstance().get(Address.class).delete(address.getId());
+                    clear();
 
-                if (deleteAction != null) {
-                    deleteAction.run();
+                    if (deleteAction != null) {
+                        deleteAction.run();
+                    }
                 }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Failed to delete object. Reason: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                throw ex;
             }
         });
     }
