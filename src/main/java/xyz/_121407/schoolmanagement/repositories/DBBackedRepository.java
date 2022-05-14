@@ -6,13 +6,15 @@ import xyz._121407.schoolmanagement.entities.Identifiable;
 import xyz._121407.schoolmanagement.exceptions.RepositoryException;
 import xyz._121407.schoolmanagement.services.Database;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class DBBackedRepository<T extends Identifiable> implements IRepository<T> {
-    private Class<T> klass;
+    private final Class<T> klass;
+    private final List<java.lang.reflect.Field> fields;
 
     public DBBackedRepository(Class<T> klass) {
         if (!klass.isAnnotationPresent(Table.class)) {
@@ -20,6 +22,9 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
         }
 
         this.klass = klass;
+        fields = Arrays.stream(klass.getDeclaredFields())
+                .filter(x -> x.isAnnotationPresent(Field.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -35,11 +40,8 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
         builder.append("INSERT INTO ").append(klass.getSimpleName());
 
         Map<String, String> values = new HashMap<>();
-        for (var field : obj.getClass().getDeclaredFields()) {
+        for (var field : fields) {
             field.setAccessible(true);
-            if (!field.isAnnotationPresent(Field.class)) {
-                continue;
-            }
 
             var fieldProps = field.getAnnotation(Field.class);
             if (!fieldProps.primaryKey()) {
@@ -74,22 +76,50 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
 
     @Override
     public Set<T> getAll() {
-        return null;
+        Set<T> entities = new HashSet<>();
+        var connection = Database.getConnection();
+
+        try (var stmt = connection.createStatement()) {
+            var res = stmt.executeQuery("SELECT * FROM " + klass.getSimpleName());
+
+            while (res.next()) {
+                var entity = klass.getConstructor().newInstance();
+
+                for (var field : fields) {
+                    field.setAccessible(true);
+
+                    if (field.getType().equals(int.class) || field.getType().equals(Integer.class)) {
+                        field.set(entity, res.getInt(field.getName()));
+                    } else if (field.getType().equals(String.class) || field.getType().isEnum()) {
+                        field.set(entity, res.getString(field.getName()));
+                    } else {
+                        throw new RepositoryException("Field type not recognized: " + field.getType().getName());
+                    }
+                }
+
+                entities.add(entity);
+            }
+        } catch (SQLException | InvocationTargetException | InstantiationException
+                | IllegalAccessException | NoSuchMethodException exception) {
+            throw new RepositoryException(exception);
+        }
+
+        return entities;
     }
 
     @Override
     public List<T> getAllSortedBy(Comparator<T> comparator) {
-        return null;
+        return getAll().stream().sorted(comparator).collect(Collectors.toList());
     }
 
     @Override
     public T findFirst(Predicate<T> predicate) {
-        return null;
+        return getAll().stream().filter(predicate).findFirst().orElse(null);
     }
 
     @Override
     public Set<T> findAll(Predicate<T> predicate) {
-        return null;
+        return getAll().stream().filter(predicate).collect(Collectors.toSet());
     }
 
     @Override
