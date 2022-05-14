@@ -136,7 +136,20 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
 
     @Override
     public void delete(int id) {
+        var connection = Database.getConnection();
 
+        var builder = new StringBuilder();
+        builder.append("DELETE FROM ")
+                .append(klass.getSimpleName())
+                .append(" WHERE id = ?");
+
+        try (var stmt = connection.prepareStatement(builder.toString())) {
+            stmt.setInt(1, id);
+
+            stmt.executeUpdate();
+        } catch (SQLException exception) {
+            throw new RepositoryException(exception);
+        }
     }
 
     private Map<String, String> getFieldValues(T obj) {
