@@ -19,11 +19,6 @@ public class Repository<T extends Identifiable> implements IRepository<T> {
     }
 
     @Override
-    public void setNextId(int nextId) {
-        this.nextId = nextId;
-    }
-
-    @Override
     public void create(T obj) {
         obj.setId(nextId++);
         entities.add(obj);

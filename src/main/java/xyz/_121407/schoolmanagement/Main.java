@@ -11,9 +11,6 @@ import xyz._121407.schoolmanagement.services.logging.Log;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -21,7 +18,7 @@ public class Main {
     private static final SerializationConfig serializationConfig = SerializationConfig.getInstance();
     private static final EntityLoader entityLoader = EntityLoader.getInstance();
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
         try {
             configure();
 
