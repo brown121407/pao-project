@@ -1,52 +1,61 @@
 package xyz._121407.schoolmanagement.entities;
 
-import xyz._121407.schoolmanagement.annotations.CsvReadable;
-import xyz._121407.schoolmanagement.annotations.CsvWritable;
+import xyz._121407.schoolmanagement.annotations.*;
 import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
+@Table
 public class Room implements Identifiable {
+    @Field(primaryKey = true)
     private int id;
+
+    @Field
     private RoomType roomType;
+
+    @Field
     private String name;
+
+    @Field
     private String building;
+
+    @Field
     private int floor;
 
-    @CsvWritable(field = "type")
+    @FieldWriter(field = "type")
     public RoomType getRoomType() {
         return roomType;
     }
 
-    @CsvReadable(field = "type")
+    @FieldReader(field = "type")
     public void setRoomType(RoomType roomType) {
         this.roomType = roomType;
     }
 
-    @CsvWritable(field = "name")
+    @FieldWriter(field = "name")
     public String getName() {
         return name;
     }
 
-    @CsvReadable(field = "name")
+    @FieldReader(field = "name")
     public void setName(String name) {
         this.name = name;
     }
 
-    @CsvWritable(field = "building")
+    @FieldWriter(field = "building")
     public String getBuilding() {
         return building;
     }
 
-    @CsvReadable(field = "building")
+    @FieldReader(field = "building")
     public void setBuilding(String building) {
         this.building = building;
     }
 
-    @CsvWritable(field = "floor")
+    @FieldWriter(field = "floor")
     public int getFloor() {
         return floor;
     }
 
-    @CsvReadable(field = "floor")
+    @FieldReader(field = "floor")
     public void setFloor(Integer floor) {
         this.floor = floor;
     }
@@ -57,13 +66,13 @@ public class Room implements Identifiable {
     }
 
     @Override
-    @CsvWritable(field = "id")
+    @FieldWriter(field = "id")
     public int getId() {
         return id;
     }
 
     @Override
-    @CsvReadable(field = "id")
+    @FieldReader(field = "id")
     public void setId(Integer id) {
         this.id = id;
     }

@@ -4,6 +4,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CsvReadable {
+public @interface FieldWriter {
     String field();
+    boolean primaryKey() default false;
 }

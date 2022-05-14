@@ -1,63 +1,75 @@
 package xyz._121407.schoolmanagement.entities;
 
-import xyz._121407.schoolmanagement.annotations.CsvReadable;
-import xyz._121407.schoolmanagement.annotations.CsvWritable;
+import xyz._121407.schoolmanagement.annotations.Field;
+import xyz._121407.schoolmanagement.annotations.FieldReader;
+import xyz._121407.schoolmanagement.annotations.FieldWriter;
+import xyz._121407.schoolmanagement.annotations.Table;
 
+@Table
 public class Address implements Identifiable {
+    @Field(primaryKey = true)
     private int id;
+
+    @Field
     private String county;
+
+    @Field
     private String city;
+
+    @Field
     private String postcode;
+
+    @Field
     private String streetLine;
 
-    @CsvWritable(field = "country")
+    @FieldWriter(field = "country")
     public String getCounty() {
         return county;
     }
 
-    @CsvReadable(field = "country")
+    @FieldReader(field = "country")
     public void setCounty(String county) {
         this.county = county;
     }
 
-    @CsvWritable(field = "city")
+    @FieldWriter(field = "city")
     public String getCity() {
         return city;
     }
 
-    @CsvReadable(field = "city")
+    @FieldReader(field = "city")
     public void setCity(String city) {
         this.city = city;
     }
 
-    @CsvWritable(field = "postcode")
+    @FieldWriter(field = "postcode")
     public String getPostcode() {
         return postcode;
     }
 
-    @CsvReadable(field = "postcode")
+    @FieldReader(field = "postcode")
     public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
 
-    @CsvWritable(field = "streetLine")
+    @FieldWriter(field = "streetLine")
     public String getStreetLine() {
         return streetLine;
     }
 
-    @CsvReadable(field = "streetLine")
+    @FieldReader(field = "streetLine")
     public void setStreetLine(String streetLine) {
         this.streetLine = streetLine;
     }
 
     @Override
-    @CsvWritable(field = "id")
+    @FieldWriter(field = "id")
     public int getId() {
         return id;
     }
 
     @Override
-    @CsvReadable(field = "id")
+    @FieldReader(field = "id")
     public void setId(Integer id) {
         this.id = id;
     }

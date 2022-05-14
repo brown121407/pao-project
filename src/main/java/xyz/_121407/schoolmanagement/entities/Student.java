@@ -1,18 +1,21 @@
 package xyz._121407.schoolmanagement.entities;
 
-import xyz._121407.schoolmanagement.annotations.CsvReadable;
-import xyz._121407.schoolmanagement.annotations.CsvWritable;
+import xyz._121407.schoolmanagement.annotations.*;
 
+@Table
 public class Student extends User {
     private Class klass;
+
+    @Field
+    @References(table = Class.class, field = "id")
     private int classId;
 
-    @CsvWritable(field = "classId")
+    @FieldWriter(field = "classId")
     public int getClassId() {
         return classId;
     }
 
-    @CsvReadable(field = "classId")
+    @FieldReader(field = "classId")
     public void setClassId(Integer classId) {
         this.classId = classId;
     }

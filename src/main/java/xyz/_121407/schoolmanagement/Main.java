@@ -4,12 +4,16 @@ import xyz._121407.schoolmanagement.entities.*;
 import xyz._121407.schoolmanagement.entities.Class;
 import xyz._121407.schoolmanagement.exceptions.RepositoryException;
 import xyz._121407.schoolmanagement.gui.MainWindow;
+import xyz._121407.schoolmanagement.services.Database;
 import xyz._121407.schoolmanagement.services.EntityLoader;
 import xyz._121407.schoolmanagement.services.SerializationConfig;
 import xyz._121407.schoolmanagement.services.logging.Log;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -17,11 +21,13 @@ public class Main {
     private static final SerializationConfig serializationConfig = SerializationConfig.getInstance();
     private static final EntityLoader entityLoader = EntityLoader.getInstance();
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         try {
             configure();
 
             SwingUtilities.invokeLater(MainWindow::new);
+
+            Database.closeConnection();
         } catch (IOException e) {
             System.err.println("Failed to initialize application.");
             System.err.println(e.getMessage());
@@ -46,5 +52,6 @@ public class Main {
         serializationConfig.setPath(Log.class, "logs.csv");
 
         entityLoader.load();
+        Database.scaffold();
     }
 }

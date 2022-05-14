@@ -1,6 +1,6 @@
 package xyz._121407.schoolmanagement.services;
 
-import xyz._121407.schoolmanagement.annotations.CsvWritable;
+import xyz._121407.schoolmanagement.annotations.FieldWriter;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -37,9 +37,9 @@ public class EntityWriter {
 
     public <T> void writeOne(T obj) throws IOException {
         var writerMethods = Arrays.stream(obj.getClass().getMethods())
-                .filter(m -> m.isAnnotationPresent(CsvWritable.class))
+                .filter(m -> m.isAnnotationPresent(FieldWriter.class))
                 // Sort to guarantee same-order serialization
-                .sorted(Comparator.comparing(m -> m.getAnnotation(CsvWritable.class).field()))
+                .sorted(Comparator.comparing(m -> m.getAnnotation(FieldWriter.class).field()))
                 .toList();
 
         var file = new File(serializationConfig.getPath(obj.getClass()));
@@ -47,7 +47,7 @@ public class EntityWriter {
 
         if (file.length() == 0) {
             var header = writerMethods.stream()
-                    .map(m -> m.getAnnotation(CsvWritable.class).field())
+                    .map(m -> m.getAnnotation(FieldWriter.class).field())
                     .collect(Collectors.joining(serializationConfig.getDelimiter()));
             writer.append(header);
             writer.append('\n');

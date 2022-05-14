@@ -1,43 +1,56 @@
 package xyz._121407.schoolmanagement.entities;
 
-import xyz._121407.schoolmanagement.annotations.CsvReadable;
-import xyz._121407.schoolmanagement.annotations.CsvWritable;
+import xyz._121407.schoolmanagement.annotations.*;
 
+@Table
 public class Class implements Identifiable {
+    @Field(primaryKey = true)
     private int id;
+
+    @Field
     private int grade;
+
+    @Field
     private String letter;
+
+    @Field
+    @References(table = Profile.class, field = "id")
     private int profileId;
+
     private Profile profile;
+
+    @Field
+    @References(table = Room.class, field = "id")
     private int roomId;
+
     private Room room;
 
-    @CsvWritable(field = "grade")
+    @FieldWriter(field = "grade")
     public int getGrade() {
         return grade;
     }
 
-    @CsvReadable(field = "grade")
+    @FieldReader(field = "grade")
     public void setGrade(Integer grade) {
         this.grade = grade;
     }
 
-    @CsvWritable(field = "letter")
+    @FieldWriter(field = "letter")
     public String getLetter() {
         return letter;
     }
 
-    @CsvReadable(field = "letter")
+    @FieldReader(field = "letter")
     public void setLetter(String letter) {
         this.letter = letter;
     }
 
-    @CsvWritable(field = "profileId")
+    @FieldWriter(field = "profileId")
     public int getProfileId() {
         return profileId;
     }
 
-    @CsvReadable(field = "profileId")
+    @FieldReader(field = "profileId")
     public void setProfileId(Integer profileId) {
         this.profileId = profileId;
     }
@@ -51,12 +64,12 @@ public class Class implements Identifiable {
         this.profileId = profile.getId();
     }
 
-    @CsvWritable(field = "roomId")
+    @FieldWriter(field = "roomId")
     public int getRoomId() {
         return roomId;
     }
 
-    @CsvReadable(field = "roomId")
+    @FieldReader(field = "roomId")
     public void setRoomId(Integer roomId) {
         this.roomId = roomId;
     }
@@ -76,13 +89,13 @@ public class Class implements Identifiable {
     }
 
     @Override
-    @CsvWritable(field = "id")
+    @FieldWriter(field = "id")
     public int getId() {
         return id;
     }
 
     @Override
-    @CsvReadable(field = "id")
+    @FieldReader(field = "id")
     public void setId(Integer id) {
         this.id = id;
     }

@@ -1,6 +1,6 @@
 package xyz._121407.schoolmanagement.services.logging;
 
-import xyz._121407.schoolmanagement.annotations.CsvWritable;
+import xyz._121407.schoolmanagement.annotations.FieldWriter;
 
 import java.time.LocalDateTime;
 
@@ -15,17 +15,17 @@ public class Log {
         this.timestamp = LocalDateTime.now();
     }
 
-    @CsvWritable(field = "type")
+    @FieldWriter(field = "type")
     public ActionType getActionType() {
         return actionType;
     }
 
-    @CsvWritable(field = "timestamp")
+    @FieldWriter(field = "timestamp")
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    @CsvWritable(field = "message")
+    @FieldWriter(field = "message")
     public String getMessage() {
         return message;
     }

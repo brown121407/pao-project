@@ -1,6 +1,6 @@
 package xyz._121407.schoolmanagement.services;
 
-import xyz._121407.schoolmanagement.annotations.CsvReadable;
+import xyz._121407.schoolmanagement.annotations.FieldReader;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
@@ -44,7 +44,7 @@ public class EntityReader {
                 var fieldValues = line.split(SerializationConfig.getInstance().getDelimiter());
                 var methods = Arrays.stream(klass.getMethods())
                         .filter(m -> {
-                            var annotation = m.getAnnotation(CsvReadable.class);
+                            var annotation = m.getAnnotation(FieldReader.class);
 
                             if (annotation == null) {
                                 return false;
@@ -59,7 +59,7 @@ public class EntityReader {
                 for (var i = 0; i < header.length; i++) {
                     var field = header[i];
                     var method = methods.stream()
-                            .filter(m -> m.getAnnotation(CsvReadable.class).field().equals(field))
+                            .filter(m -> m.getAnnotation(FieldReader.class).field().equals(field))
                             .findFirst();
 
                     if (method.isPresent()) {
