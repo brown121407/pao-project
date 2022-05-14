@@ -29,7 +29,9 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
 
     @Override
     public void seed(List<T> entities) {
-
+        for (var entity : entities) {
+            create(entity);
+        }
     }
 
     @Override
@@ -39,23 +41,7 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
         var builder = new StringBuilder();
         builder.append("INSERT INTO ").append(klass.getSimpleName());
 
-        Map<String, String> values = new HashMap<>();
-        for (var field : fields) {
-            field.setAccessible(true);
-
-            var fieldProps = field.getAnnotation(Field.class);
-            if (!fieldProps.primaryKey()) {
-                try {
-                    if (field.getType().equals(String.class) || field.getType().isEnum()) {
-                        values.put(field.getName(), "'" + field.get(obj).toString() + "'");
-                    } else {
-                        values.put(field.getName(), field.get(obj).toString());
-                    }
-                } catch (IllegalAccessException exception) {
-                    throw new RepositoryException(exception);
-                }
-            }
-        }
+        Map<String, String> values = getFieldValues(obj);
 
         var entrySet = values.entrySet();
         var fieldNames = entrySet.stream().map(Map.Entry::getKey).collect(Collectors.joining(", "));
@@ -124,11 +110,54 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
 
     @Override
     public void update(T obj) {
+        var connection = Database.getConnection();
 
+        var values = getFieldValues(obj);
+        var builder = new StringBuilder();
+        builder.append("UPDATE ")
+                .append(klass.getSimpleName())
+                .append(" SET ");
+
+        var updates = values.entrySet().stream()
+                .map(x -> x.getKey() + " = " + x.getValue())
+                .collect(Collectors.joining(", "));
+
+        builder.append(updates)
+                .append(" WHERE id = ?");
+
+        try (var stmt = connection.prepareStatement(builder.toString())) {
+            stmt.setInt(1, obj.getId());
+
+            stmt.executeUpdate();
+        } catch (SQLException exception) {
+            throw new RepositoryException(exception);
+        }
     }
 
     @Override
     public void delete(int id) {
 
+    }
+
+    private Map<String, String> getFieldValues(T obj) {
+        Map<String, String> values = new HashMap<>();
+        for (var field : fields) {
+            field.setAccessible(true);
+
+            var fieldProps = field.getAnnotation(Field.class);
+            if (!fieldProps.primaryKey()) {
+                try {
+                    if (field.getType().equals(String.class) || field.getType().isEnum()) {
+                        values.put(field.getName(), "'" + field.get(obj).toString() + "'");
+                    } else {
+                        values.put(field.getName(), field.get(obj).toString());
+                    }
+                } catch (IllegalAccessException exception) {
+                    throw new RepositoryException(exception);
+                }
+            }
+        }
+
+        return values;
     }
 }
