@@ -4,16 +4,16 @@ import xyz._121407.schoolmanagement.annotations.Field;
 import xyz._121407.schoolmanagement.annotations.FieldWriter;
 import xyz._121407.schoolmanagement.annotations.References;
 import xyz._121407.schoolmanagement.annotations.Table;
-import xyz._121407.schoolmanagement.entities.Identifiable;
-import xyz._121407.schoolmanagement.entities.Profile;
-import xyz._121407.schoolmanagement.entities.Room;
-import xyz._121407.schoolmanagement.entities.Subject;
+import xyz._121407.schoolmanagement.entities.*;
+import xyz._121407.schoolmanagement.utils.Reflection;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.lang.Class;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -48,6 +48,8 @@ public class Database {
         scaffold(Profile.class, connection);
         scaffold(Room.class, connection);
         scaffold(xyz._121407.schoolmanagement.entities.Class.class, connection);
+        scaffold(Address.class, connection);
+        scaffold(Student.class, connection);
     }
 
     public static <T extends Identifiable> void scaffold(Class<T> klass, Connection connection) {
@@ -57,7 +59,7 @@ public class Database {
 
         List<String> fieldDecls = new ArrayList<>();
         List<String> constraints = new ArrayList<>();
-        for (var field : klass.getDeclaredFields()) {
+        for (var field : Reflection.getAllFields(klass)) {
             field.setAccessible(true);
             if (field.isAnnotationPresent(Field.class)) {
                 var builder = new StringBuilder();
@@ -67,6 +69,8 @@ public class Database {
                     builder.append(" INTEGER ");
                 } else if (field.getType().equals(String.class) || field.getType().isEnum()) {
                     builder.append(" TEXT ");
+                } else if (field.getType().equals(LocalDate.class)) {
+                    builder.append(" DATE ");
                 } else {
                     throw new RuntimeException("Not implemented");
                 }
@@ -77,6 +81,12 @@ public class Database {
                     constraints.add(" PRIMARY KEY (" + field.getName() + ")");
                 } else if (!fieldProps.nullable()) {
                     builder.append(" NOT NULL ");
+                }
+
+                if (field.getType().equals(String.class)) {
+                    builder.append(" CHECK (")
+                            .append(field.getName())
+                            .append(" <> '') ");
                 }
 
                 if (field.isAnnotationPresent(References.class)) {

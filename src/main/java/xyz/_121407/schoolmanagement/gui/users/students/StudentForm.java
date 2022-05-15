@@ -30,7 +30,7 @@ public class StudentForm extends UserForm<Student> {
     public void fill(Student student) {
         super.fill(student);
 
-        classComboBox.setSelectedItem(student.getKlass());
+        refresh();
     }
 
     @Override

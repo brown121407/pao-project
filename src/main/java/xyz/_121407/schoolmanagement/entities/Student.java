@@ -4,11 +4,12 @@ import xyz._121407.schoolmanagement.annotations.*;
 
 @Table
 public class Student extends User {
-    private Class klass;
-
     @Field
     @References(table = Class.class, field = "id")
     private int classId;
+
+    @Navigation
+    private Class klass;
 
     @FieldWriter(field = "classId")
     public int getClassId() {

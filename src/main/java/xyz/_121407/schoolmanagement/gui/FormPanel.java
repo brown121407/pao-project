@@ -95,6 +95,7 @@ public abstract class FormPanel<T extends Identifiable> extends JPanel implement
                 submitAction.accept(obj);
             }
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Failed to create object. Please check that you filled all the fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

@@ -49,8 +49,7 @@ public class ClassForm extends FormPanel<Class> {
 
         gradeSpinner.setValue(obj.getGrade());
         letterField.setText(obj.getLetter());
-        roomComboBox.setSelectedItem(obj.getRoom());
-        profileComboBox.setSelectedItem(obj.getProfile());
+        refresh();
     }
 
     @Override

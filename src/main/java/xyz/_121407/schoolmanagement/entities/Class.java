@@ -17,12 +17,14 @@ public class Class implements Identifiable {
     @References(table = Profile.class, field = "id")
     private int profileId;
 
+    @Navigation
     private Profile profile;
 
     @Field
     @References(table = Room.class, field = "id")
     private int roomId;
 
+    @Navigation
     private Room room;
 
     @FieldWriter(field = "grade")

@@ -24,6 +24,7 @@ public abstract class User implements Identifiable {
     @References(table = Address.class, field = "id")
     protected int addressId;
 
+    @Navigation
     protected Address address;
 
     @FieldWriter(field = "firstName")

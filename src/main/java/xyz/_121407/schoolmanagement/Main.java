@@ -7,6 +7,7 @@ import xyz._121407.schoolmanagement.gui.MainWindow;
 import xyz._121407.schoolmanagement.services.Database;
 import xyz._121407.schoolmanagement.services.EntityLoader;
 import xyz._121407.schoolmanagement.services.SerializationConfig;
+import xyz._121407.schoolmanagement.services.Store;
 import xyz._121407.schoolmanagement.services.logging.Log;
 
 import javax.swing.*;
@@ -33,6 +34,7 @@ public class Main {
             System.err.println(Arrays.stream(e.getSuppressed()).map(Throwable::getMessage).collect(Collectors.toList()));
         } catch (RuntimeException e) {
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -48,7 +50,7 @@ public class Main {
         serializationConfig.setPath(Parent.class, "parents.csv");
         serializationConfig.setPath(Log.class, "logs.csv");
 
-        entityLoader.load();
+//        entityLoader.load();
         Database.scaffold();
     }
 }

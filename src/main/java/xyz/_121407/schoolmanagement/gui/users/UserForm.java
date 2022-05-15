@@ -65,6 +65,7 @@ public abstract class UserForm<T extends User> extends FormPanel<T> {
                     submitAction.accept(obj);
                 }
             } catch (Exception ex) {
+                ex.printStackTrace();
                 JOptionPane.showMessageDialog(null, "Failed to create object. Please check that you filled all the fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });

@@ -3,6 +3,7 @@ package xyz._121407.schoolmanagement.services;
 import xyz._121407.schoolmanagement.entities.*;
 import xyz._121407.schoolmanagement.entities.Class;
 import xyz._121407.schoolmanagement.repositories.CsvBackedRepository;
+import xyz._121407.schoolmanagement.repositories.DBBackedRepository;
 import xyz._121407.schoolmanagement.repositories.IRepository;
 import xyz._121407.schoolmanagement.repositories.Repository;
 
@@ -15,14 +16,14 @@ public class Store {
     private final Map<java.lang.Class<?>, IRepository<Identifiable>> repositoryMap = new HashMap<>();
 
     private Store() {
-        repositoryMap.put(Subject.class, new CsvBackedRepository<>(Subject.class));
-        repositoryMap.put(Profile.class, new CsvBackedRepository<>(Profile.class));
-        repositoryMap.put(Room.class, new CsvBackedRepository<>(Room.class));
-        repositoryMap.put(Class.class, new CsvBackedRepository<>(Class.class));
-        repositoryMap.put(Address.class, new CsvBackedRepository<>(Address.class));
-        repositoryMap.put(Student.class, new CsvBackedRepository<>(Student.class));
-        repositoryMap.put(Teacher.class, new Repository<>());
-        repositoryMap.put(Parent.class, new Repository<>());
+        repositoryMap.put(Subject.class, new DBBackedRepository<>(Subject.class));
+        repositoryMap.put(Profile.class, new DBBackedRepository<>(Profile.class));
+        repositoryMap.put(Room.class, new DBBackedRepository<>(Room.class));
+        repositoryMap.put(Class.class, new DBBackedRepository<>(Class.class));
+        repositoryMap.put(Address.class, new DBBackedRepository<>(Address.class));
+        repositoryMap.put(Student.class, new DBBackedRepository<>(Student.class));
+//        repositoryMap.put(Teacher.class, new Repository<>());
+//        repositoryMap.put(Parent.class, new Repository<>());
     }
 
     public static Store getInstance() {
