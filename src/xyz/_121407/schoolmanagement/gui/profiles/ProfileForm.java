@@ -1,6 +1,6 @@
-package xyz._121407.schoolmanagement.gui.subjects;
+package xyz._121407.schoolmanagement.gui.profiles;
 
-import xyz._121407.schoolmanagement.entities.Subject;
+import xyz._121407.schoolmanagement.entities.Profile;
 import xyz._121407.schoolmanagement.gui.FormPanel;
 import xyz._121407.schoolmanagement.repositories.IRepository;
 import xyz._121407.schoolmanagement.services.Store;
@@ -8,11 +8,11 @@ import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
 
-public class SubjectForm extends FormPanel<Subject> {
+public class ProfileForm extends FormPanel<Profile> {
     private final JTextField nameField = new JTextField();
 
-    public SubjectForm() {
-        super(Subject.class);
+    public ProfileForm() {
+        super(Profile.class);
 
         JPanel namePanel = new JPanel();
         JLabel nameLabel = new JLabel("Name: ");
@@ -25,10 +25,10 @@ public class SubjectForm extends FormPanel<Subject> {
     }
 
     @Override
-    public void fill(Subject subject) {
-        nameField.setText(subject.getName());
+    public void fill(Profile profile) {
+        nameField.setText(profile.getName());
 
-        super.fill(subject);
+        super.fill(profile);
     }
 
     @Override
@@ -39,14 +39,14 @@ public class SubjectForm extends FormPanel<Subject> {
     }
 
     @Override
-    public Subject getValue() {
-        Subject subject = new Subject();
-        subject.setName(nameField.getText());
+    public Profile getValue() {
+        Profile profile = new Profile();
+        profile.setName(nameField.getText());
 
         if (selectedId != null) {
-            subject.setId(selectedId);
+            profile.setId(selectedId);
         }
 
-        return subject;
+        return profile;
     }
 }

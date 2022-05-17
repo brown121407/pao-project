@@ -2,18 +2,20 @@ package xyz._121407.schoolmanagement.gui;
 
 import xyz._121407.schoolmanagement.entities.Address;
 import xyz._121407.schoolmanagement.repositories.IRepository;
-import xyz._121407.schoolmanagement.services.InMemoryStore;
+import xyz._121407.schoolmanagement.services.Store;
 import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
 
 public class AddressPicker extends FormPanel<Address> {
-    private JTextField countyField = new JTextField(DEFAULT_COLUMNS);
-    private JTextField cityField = new JTextField(DEFAULT_COLUMNS);
-    private JTextField postCodeField = new JTextField(DEFAULT_COLUMNS);
-    private JTextField streetLineField = new JTextField(DEFAULT_COLUMNS);
+    private final JTextField countyField = new JTextField(DEFAULT_COLUMNS);
+    private final JTextField cityField = new JTextField(DEFAULT_COLUMNS);
+    private final JTextField postCodeField = new JTextField(DEFAULT_COLUMNS);
+    private final JTextField streetLineField = new JTextField(DEFAULT_COLUMNS);
 
     public AddressPicker() {
+        super(Address.class);
+
         JPanel countyPanel = makeFieldPanel("County:", countyField);
         JPanel cityPanel = makeFieldPanel("City:", cityField);
         JPanel postCodePanel = makeFieldPanel("Post code:", postCodeField);
@@ -33,6 +35,10 @@ public class AddressPicker extends FormPanel<Address> {
         address.setCity(cityField.getText());
         address.setPostcode(postCodeField.getText());
         address.setStreetLine(streetLineField.getText());
+
+        if (selectedId != null) {
+            address.setId(selectedId);
+        }
 
         return address;
     }
@@ -55,15 +61,5 @@ public class AddressPicker extends FormPanel<Address> {
         cityField.setText("");
         postCodeField.setText("");
         streetLineField.setText("");
-    }
-
-    @Override
-    protected String getEntityName() {
-        return EnglishFormatter.toHumanReadable(Address.class);
-    }
-
-    @Override
-    protected IRepository<Address> getRepository() {
-        return InMemoryStore.getInstance().getAddressRepository();
     }
 }

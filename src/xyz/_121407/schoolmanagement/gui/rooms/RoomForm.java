@@ -4,7 +4,7 @@ import xyz._121407.schoolmanagement.entities.Room;
 import xyz._121407.schoolmanagement.entities.RoomType;
 import xyz._121407.schoolmanagement.gui.FormPanel;
 import xyz._121407.schoolmanagement.repositories.IRepository;
-import xyz._121407.schoolmanagement.services.InMemoryStore;
+import xyz._121407.schoolmanagement.services.Store;
 import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
@@ -29,7 +29,7 @@ public class RoomForm extends FormPanel<Room> {
     private JSpinner floorSpinner = new JSpinner();
 
     public RoomForm() {
-        super();
+        super(Room.class);
 
         typePanel.setLayout(new FlowLayout(FlowLayout.CENTER));
         ButtonGroup buttonGroup = new ButtonGroup();
@@ -103,15 +103,5 @@ public class RoomForm extends FormPanel<Room> {
         }
 
         return room;
-    }
-
-    @Override
-    protected String getEntityName() {
-        return EnglishFormatter.toHumanReadable(Room.class);
-    }
-
-    @Override
-    protected IRepository<Room> getRepository() {
-        return InMemoryStore.getInstance().getRoomRepository();
     }
 }

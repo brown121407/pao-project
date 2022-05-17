@@ -1,15 +1,18 @@
 package xyz._121407.schoolmanagement.entities;
 
-public class Subject implements Identifiable {
-    private static int lastId = 0;
+import xyz._121407.schoolmanagement.annotations.CsvReadable;
+import xyz._121407.schoolmanagement.annotations.CsvWritable;
 
+public class Subject implements Identifiable {
     private int id = 0;
     private String name;
 
+    @CsvWritable(field = "name")
     public String getName() {
         return name;
     }
 
+    @CsvReadable(field = "name")
     public void setName(String name) {
         this.name = name;
     }
@@ -20,17 +23,14 @@ public class Subject implements Identifiable {
     }
 
     @Override
+    @CsvWritable(field = "id")
     public int getId() {
         return id;
     }
 
     @Override
-    public void setId(int id) {
+    @CsvReadable(field = "id")
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    @Override
-    public int nextId() {
-        return lastId++;
     }
 }

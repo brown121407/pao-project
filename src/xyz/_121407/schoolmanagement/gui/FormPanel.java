@@ -2,6 +2,8 @@ package xyz._121407.schoolmanagement.gui;
 
 import xyz._121407.schoolmanagement.entities.Identifiable;
 import xyz._121407.schoolmanagement.repositories.IRepository;
+import xyz._121407.schoolmanagement.services.Store;
+import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
 import java.util.function.Consumer;
@@ -19,8 +21,13 @@ public abstract class FormPanel<T extends Identifiable> extends JPanel implement
     protected Runnable deleteAction;
 
     protected Integer selectedId = null;
+    protected String entityName;
+    protected IRepository<T> repository;
 
-    protected FormPanel() {
+    protected FormPanel(Class<T> klass) {
+        this.entityName = EnglishFormatter.toHumanReadable(klass);
+        this.repository = Store.getInstance().get(klass);
+
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         configureStatus();
@@ -35,13 +42,9 @@ public abstract class FormPanel<T extends Identifiable> extends JPanel implement
         actionsPanel.add(submitButton);
         actionsPanel.add(deleteButton);
 
-        submitButton.addActionListener(e -> {
-            defaultSubmitAction();
-        });
+        submitButton.addActionListener(e -> defaultSubmitAction());
 
-        deleteButton.addActionListener(e -> {
-            defaultDeleteAction();
-        });
+        deleteButton.addActionListener(e -> defaultDeleteAction());
     }
 
     public void fill(T obj) {
@@ -66,43 +69,48 @@ public abstract class FormPanel<T extends Identifiable> extends JPanel implement
         this.deleteAction = deleteAction;
     }
 
-    protected abstract String getEntityName();
-    protected abstract IRepository<T> getRepository();
-
     protected void configureStatus() {
         configureStatus(false, null);
     }
 
     protected void configureStatus(boolean editing, T obj) {
         if (editing) {
-            statusLabel.setText("Edit " + getEntityName() + ": " + obj);
+            statusLabel.setText("Edit " + entityName + ": " + obj);
         } else {
-            statusLabel.setText("Create a new " + getEntityName());
+            statusLabel.setText("Create a new " + entityName);
         }
     }
 
     protected void defaultSubmitAction() {
-        T obj = getValue();
-        if (selectedId != null) {
-            getRepository().update(obj);
-        } else {
-            getRepository().create(obj);
-        }
+        try {
+            T obj = getValue();
+            if (selectedId != null) {
+                repository.update(obj);
+            } else {
+                repository.create(obj);
+            }
 
-        if (submitAction != null) {
-            fill(obj);
-            submitAction.accept(obj);
+            if (submitAction != null) {
+                fill(obj);
+                submitAction.accept(obj);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Failed to create object. Please check that you filled all the fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     protected void defaultDeleteAction() {
-        if (selectedId != null) {
-            getRepository().delete(selectedId);
-            clear();
+        try {
+            if (selectedId != null) {
+                repository.delete(selectedId);
+                clear();
 
-            if (deleteAction != null) {
-                deleteAction.run();
+                if (deleteAction != null) {
+                    deleteAction.run();
+                }
             }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Failed to delete object. Reason: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

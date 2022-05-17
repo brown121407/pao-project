@@ -1,11 +1,10 @@
 package xyz._121407.schoolmanagement.gui.classes;
 
 import xyz._121407.schoolmanagement.entities.Class;
+import xyz._121407.schoolmanagement.entities.Profile;
 import xyz._121407.schoolmanagement.entities.Room;
 import xyz._121407.schoolmanagement.gui.FormPanel;
-import xyz._121407.schoolmanagement.repositories.IRepository;
-import xyz._121407.schoolmanagement.services.InMemoryStore;
-import xyz._121407.schoolmanagement.utils.EnglishFormatter;
+import xyz._121407.schoolmanagement.services.Store;
 
 import javax.swing.*;
 
@@ -13,10 +12,12 @@ public class ClassForm extends FormPanel<Class> {
     JSpinner gradeSpinner = new JSpinner();
     JTextField letterField = new JTextField(DEFAULT_COLUMNS);
     JComboBox<Room> roomComboBox = new JComboBox<>();
-    DefaultComboBoxModel<Room> comboBoxModel = new DefaultComboBoxModel<>();
+    DefaultComboBoxModel<Room> roomComboBoxModel = new DefaultComboBoxModel<>();
+    JComboBox<Profile> profileComboBox = new JComboBox<>();
+    DefaultComboBoxModel<Profile> profileComboBoxModel = new DefaultComboBoxModel<>();
 
     public ClassForm() {
-        super();
+        super(Class.class);
 
         var gradePanel = makeFieldPanel("Grade:");
         SpinnerModel model = new SpinnerNumberModel(5, 5, 13, 1);
@@ -26,13 +27,19 @@ public class ClassForm extends FormPanel<Class> {
         var letterPanel = makeFieldPanel("Letter:", letterField);
 
         var roomPanel = makeFieldPanel("Room:");
-        comboBoxModel.addAll(InMemoryStore.getInstance().getRoomRepository().getAll());
-        roomComboBox.setModel(comboBoxModel);
+        roomComboBoxModel.addAll(Store.getInstance().get(Room.class).getAll());
+        roomComboBox.setModel(roomComboBoxModel);
         roomPanel.add(roomComboBox);
+
+        var profilePanel = makeFieldPanel("Profile:");
+        profileComboBoxModel.addAll(Store.getInstance().get(Profile.class).getAll());
+        profileComboBox.setModel(profileComboBoxModel);
+        profilePanel.add(profileComboBox);
 
         add(gradePanel);
         add(letterPanel);
         add(roomPanel);
+        add(profilePanel);
         add(actionsPanel);
     }
 
@@ -43,6 +50,7 @@ public class ClassForm extends FormPanel<Class> {
         gradeSpinner.setValue(obj.getGrade());
         letterField.setText(obj.getLetter());
         roomComboBox.setSelectedItem(obj.getRoom());
+        profileComboBox.setSelectedItem(obj.getProfile());
     }
 
     @Override
@@ -62,6 +70,7 @@ public class ClassForm extends FormPanel<Class> {
         klass.setGrade((Integer) gradeSpinner.getValue());
         klass.setLetter(letterField.getText());
         klass.setRoom((Room) roomComboBox.getSelectedItem());
+        klass.setProfile((Profile) profileComboBox.getSelectedItem());
 
         if (selectedId != null) {
             klass.setId(selectedId);
@@ -71,30 +80,34 @@ public class ClassForm extends FormPanel<Class> {
     }
 
     @Override
-    protected String getEntityName() {
-        return EnglishFormatter.toHumanReadable(Class.class);
-    }
-
-    @Override
-    protected IRepository<Class> getRepository() {
-        return InMemoryStore.getInstance().getClassRepository();
-    }
-
-    @Override
     public void refresh() {
         super.refresh();
 
         roomComboBox.removeAllItems();
 
-        var newList = InMemoryStore.getInstance().getRoomRepository().getAll();
-        comboBoxModel.addAll(newList);
+        var newRooms = Store.getInstance().get(Room.class).getAll();
+        roomComboBoxModel.addAll(newRooms);
+
+        profileComboBox.removeAllItems();
+
+        var newProfiles = Store.getInstance().get(Profile.class).getAll();
+        profileComboBoxModel.addAll(newProfiles);
 
         if (selectedId != null) {
-            var selected = newList.stream().filter(x -> x.getId() == selectedId).findFirst();
-            if (selected.isPresent()) {
-                roomComboBox.setSelectedItem(selected.get());
-            } else if (newList.size() > 0) {
+            var selected = repository.findFirst(x -> x.getId() == selectedId);
+
+            var selectedRoom = newRooms.stream().filter(x -> x.getId() == selected.getRoomId()).findFirst();
+            if (selectedRoom.isPresent()) {
+                roomComboBox.setSelectedItem(selectedRoom.get());
+            } else if (newRooms.size() > 0) {
                 roomComboBox.setSelectedIndex(0);
+            }
+
+            var selectedProfile = newProfiles.stream().filter(x -> x.getId() == selected.getProfileId()).findFirst();
+            if (selectedProfile.isPresent()) {
+                profileComboBox.setSelectedItem(selectedProfile.get());
+            } else if (newProfiles.size() > 0) {
+                profileComboBox.setSelectedIndex(0);
             }
         }
     }

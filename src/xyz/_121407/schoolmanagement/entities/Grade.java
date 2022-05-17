@@ -3,8 +3,6 @@ package xyz._121407.schoolmanagement.entities;
 import java.util.Date;
 
 public class Grade implements Identifiable {
-    private static int lastId = 0;
-
     private int id;
     private int score;
     private Date when;
@@ -24,12 +22,7 @@ public class Grade implements Identifiable {
     }
 
     @Override
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
-    }
-
-    @Override
-    public int nextId() {
-        return lastId++;
     }
 }

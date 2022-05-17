@@ -3,12 +3,12 @@ package xyz._121407.schoolmanagement.gui.users.parents;
 import xyz._121407.schoolmanagement.entities.Parent;
 import xyz._121407.schoolmanagement.gui.users.UserForm;
 import xyz._121407.schoolmanagement.repositories.IRepository;
-import xyz._121407.schoolmanagement.services.InMemoryStore;
+import xyz._121407.schoolmanagement.services.Store;
 import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 public class ParentForm extends UserForm<Parent> {
     public ParentForm() {
-        super();
+        super(Parent.class);
 
         add(actionsPanel);
     }
@@ -37,15 +37,5 @@ public class ParentForm extends UserForm<Parent> {
         }
 
         return parent;
-    }
-
-    @Override
-    protected String getEntityName() {
-        return EnglishFormatter.toHumanReadable(Parent.class);
-    }
-
-    @Override
-    protected IRepository<Parent> getRepository() {
-        return InMemoryStore.getInstance().getParentRepository();
     }
 }

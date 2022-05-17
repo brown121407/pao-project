@@ -2,19 +2,30 @@ package xyz._121407.schoolmanagement.repositories;
 
 import xyz._121407.schoolmanagement.entities.Identifiable;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Repository<T extends Identifiable> implements IRepository<T> {
-    private final Set<T> entities = new HashSet<>();
+    protected Set<T> entities = new HashSet<>();
+    private int nextId = 1;
+
+    public void seed(List<T> entities) {
+        this.entities = new HashSet<>(entities);
+        this.nextId = entities.stream()
+                .map(Identifiable::getId)
+                .max(Integer::compareTo)
+                .orElse(0) + 1;
+    }
+
+    @Override
+    public void setNextId(int nextId) {
+        this.nextId = nextId;
+    }
 
     @Override
     public void create(T obj) {
-        obj.setId(obj.nextId());
+        obj.setId(nextId++);
         entities.add(obj);
     }
 

@@ -4,7 +4,7 @@ import xyz._121407.schoolmanagement.entities.Subject;
 import xyz._121407.schoolmanagement.entities.Teacher;
 import xyz._121407.schoolmanagement.gui.users.UserForm;
 import xyz._121407.schoolmanagement.repositories.IRepository;
-import xyz._121407.schoolmanagement.services.InMemoryStore;
+import xyz._121407.schoolmanagement.services.Store;
 import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
@@ -14,10 +14,10 @@ public class TeacherForm extends UserForm<Teacher> {
     DefaultComboBoxModel<Subject> comboBoxModel = new DefaultComboBoxModel<>();
 
     public TeacherForm() {
-        super();
+        super(Teacher.class);
 
         var comboBoxPanel = makeFieldPanel("Teaches:");
-        comboBoxModel.addAll(InMemoryStore.getInstance().getSubjectRepository().getAll());
+        comboBoxModel.addAll(Store.getInstance().get(Subject.class).getAll());
         subjectComboBox.setModel(comboBoxModel);
         comboBoxPanel.add(subjectComboBox);
 
@@ -59,22 +59,12 @@ public class TeacherForm extends UserForm<Teacher> {
     }
 
     @Override
-    protected String getEntityName() {
-        return EnglishFormatter.toHumanReadable(Teacher.class);
-    }
-
-    @Override
-    protected IRepository<Teacher> getRepository() {
-        return InMemoryStore.getInstance().getTeacherRepository();
-    }
-
-    @Override
     public void refresh() {
         super.refresh();
 
         comboBoxModel.removeAllElements();
 
-        var newList = InMemoryStore.getInstance().getSubjectRepository().getAll();
+        var newList = Store.getInstance().get(Subject.class).getAll();
         comboBoxModel.addAll(newList);
 
         if (selectedId != null) {

@@ -1,6 +1,7 @@
 package xyz._121407.schoolmanagement.gui;
 
 import xyz._121407.schoolmanagement.gui.classes.ClassesPanel;
+import xyz._121407.schoolmanagement.gui.profiles.ProfilesPanel;
 import xyz._121407.schoolmanagement.gui.rooms.RoomsPanel;
 import xyz._121407.schoolmanagement.gui.subjects.SubjectsPanel;
 import xyz._121407.schoolmanagement.gui.users.UsersPane;
@@ -28,6 +29,7 @@ public class MainWindow {
         tabbedPane.add("Rooms", new RoomsPanel());
         tabbedPane.add("Classes", new ClassesPanel());
         tabbedPane.add("Subjects", new SubjectsPanel());
+        tabbedPane.add("Profiles", new ProfilesPanel());
         tabbedPane.getModel().addChangeListener(e -> {
             Refreshable comp = (Refreshable) tabbedPane.getSelectedComponent();
             comp.refresh();
