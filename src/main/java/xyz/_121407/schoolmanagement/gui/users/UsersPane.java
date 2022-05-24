@@ -10,8 +10,10 @@ import javax.swing.*;
 public class UsersPane extends JTabbedPane implements Refreshable {
     public UsersPane() {
         add("Students", new StudentsPanel());
-//        add("Teachers", new TeachersPanel());
-//        add("Parents", new ParentsPanel());
+        add("Teachers", new TeachersPanel());
+        add("Parents", new ParentsPanel());
+
+        addChangeListener(e -> refresh());
     }
 
     @Override

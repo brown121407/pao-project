@@ -106,7 +106,9 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
         var connection = Database.getConnection();
 
         try (var stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
-            var res = stmt.executeQuery("SELECT * FROM " + klass.getSimpleName());
+            var sql = "SELECT * FROM " + klass.getSimpleName();
+            System.out.println(sql);
+            var res = stmt.executeQuery(sql);
 
             var count = 0;
             if (res.last()) {
@@ -206,8 +208,11 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
         builder.append(updates)
                 .append(" WHERE id = ?");
 
-        try (var stmt = connection.prepareStatement(builder.toString())) {
+        var sql = builder.toString();
+        try (var stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, obj.getId());
+
+            System.out.println(sql);
 
             stmt.executeUpdate();
         } catch (SQLException exception) {
@@ -224,8 +229,12 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
                 .append(klass.getSimpleName())
                 .append(" WHERE id = ?");
 
-        try (var stmt = connection.prepareStatement(builder.toString())) {
+        var sql = builder.toString();
+
+        try (var stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
+
+            System.out.println(sql);
 
             stmt.executeUpdate();
         } catch (SQLException exception) {
@@ -241,7 +250,9 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
             var fieldProps = field.getAnnotation(Field.class);
             if (!fieldProps.primaryKey()) {
                 try {
-                    if (field.getType().equals(String.class) || field.getType().equals(LocalDate.class)
+                    if (field.get(obj) == null) {
+                        values.put(field.getName(), "NULL");
+                    } else if (field.getType().equals(String.class) || field.getType().equals(LocalDate.class)
                             || field.getType().isEnum()) {
                         values.put(field.getName(), "'" + field.get(obj).toString() + "'");
                     } else {

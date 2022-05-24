@@ -22,8 +22,8 @@ public class Store {
         repositoryMap.put(Class.class, new DBBackedRepository<>(Class.class));
         repositoryMap.put(Address.class, new DBBackedRepository<>(Address.class));
         repositoryMap.put(Student.class, new DBBackedRepository<>(Student.class));
-//        repositoryMap.put(Teacher.class, new Repository<>());
-//        repositoryMap.put(Parent.class, new Repository<>());
+        repositoryMap.put(Teacher.class, new DBBackedRepository<>(Teacher.class));
+        repositoryMap.put(Parent.class, new DBBackedRepository<>(Parent.class));
     }
 
     public static Store getInstance() {

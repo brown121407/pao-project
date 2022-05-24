@@ -8,6 +8,9 @@ import xyz._121407.schoolmanagement.services.Store;
 import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 public class TeacherForm extends UserForm<Teacher> {
     JComboBox<Subject> subjectComboBox = new JComboBox<>();
@@ -29,7 +32,7 @@ public class TeacherForm extends UserForm<Teacher> {
     public void fill(Teacher obj) {
         super.fill(obj);
 
-        subjectComboBox.setSelectedItem(obj.getSubject());
+        refresh();
     }
 
     @Override
@@ -64,14 +67,16 @@ public class TeacherForm extends UserForm<Teacher> {
 
         comboBoxModel.removeAllElements();
 
-        var newList = Store.getInstance().get(Subject.class).getAll();
-        comboBoxModel.addAll(newList);
+        var newSubjects = Store.getInstance().get(Subject.class).getAll();
+        comboBoxModel.addAll(newSubjects);
 
         if (selectedId != null) {
-            var selected = newList.stream().filter(x -> x.getId() == selectedId).findFirst();
-            if (selected.isPresent()) {
-                subjectComboBox.setSelectedItem(selected.get());
-            } else if (newList.size() > 0) {
+            var selected = repository.findFirst(x -> x.getId() == selectedId);
+
+            var selectedSubject = newSubjects.stream().filter(x -> x.getId() == selected.getSubjectId()).findFirst();
+            if (selectedSubject.isPresent()) {
+                subjectComboBox.setSelectedItem(selectedSubject.get());
+            } else if (newSubjects.size() > 0) {
                 subjectComboBox.setSelectedIndex(0);
             }
         }

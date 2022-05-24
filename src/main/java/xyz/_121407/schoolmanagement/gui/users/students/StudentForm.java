@@ -1,28 +1,36 @@
 package xyz._121407.schoolmanagement.gui.users.students;
 
 import xyz._121407.schoolmanagement.entities.Class;
+import xyz._121407.schoolmanagement.entities.Parent;
 import xyz._121407.schoolmanagement.entities.Student;
 import xyz._121407.schoolmanagement.gui.users.UserForm;
-import xyz._121407.schoolmanagement.repositories.IRepository;
 import xyz._121407.schoolmanagement.services.Store;
-import xyz._121407.schoolmanagement.utils.EnglishFormatter;
 
 import javax.swing.*;
 
 public class StudentForm extends UserForm<Student> {
     JComboBox<Class> classComboBox = new JComboBox<>();
-    DefaultComboBoxModel<Class> comboBoxModel = new DefaultComboBoxModel<>();
+    DefaultComboBoxModel<Class> classComboBoxModel = new DefaultComboBoxModel<>();
+    JComboBox<Parent> parentComboBox = new JComboBox<>();
+    DefaultComboBoxModel<Parent> parentComboBoxModel = new DefaultComboBoxModel<>();
 
     public StudentForm() {
         super(Student.class);
 
-        comboBoxModel.addAll(Store.getInstance().get(Class.class).getAll());
-        classComboBox.setModel(comboBoxModel);
+        classComboBoxModel.addAll(Store.getInstance().get(Class.class).getAll());
+        classComboBox.setModel(classComboBoxModel);
 
-        var comboBoxPanel = makeFieldPanel("Class:");
-        comboBoxPanel.add(classComboBox);
+        var classComboBoxPanel = makeFieldPanel("Class:");
+        classComboBoxPanel.add(classComboBox);
 
-        add(comboBoxPanel);
+        parentComboBoxModel.addAll(Store.getInstance().get(Parent.class).getAll());
+        parentComboBox.setModel(parentComboBoxModel);
+
+        var parentComboBoxPanel = makeFieldPanel("Parent:");
+        parentComboBoxPanel.add(parentComboBox);
+
+        add(classComboBoxPanel);
+        add(parentComboBoxPanel);
         add(actionsPanel);
     }
 
@@ -40,6 +48,10 @@ public class StudentForm extends UserForm<Student> {
         if (classComboBox.getModel().getSize() > 0) {
             classComboBox.setSelectedIndex(0);
         }
+
+        if (parentComboBox.getModel().getSize() > 0) {
+            parentComboBox.setSelectedIndex(0);
+        }
     }
 
     @Override
@@ -51,6 +63,7 @@ public class StudentForm extends UserForm<Student> {
         student.setDateOfBirth(dateOfBirthPicker.getDate());
         student.setAddress(addressPicker.getValue());
         student.setKlass((Class) classComboBox.getSelectedItem());
+        student.setParent((Parent) parentComboBox.getSelectedItem());
 
         if (selectedId != null) {
             student.setId(selectedId);
@@ -63,17 +76,29 @@ public class StudentForm extends UserForm<Student> {
     public void refresh() {
         super.refresh();
 
-        comboBoxModel.removeAllElements();
+        var newClasses = Store.getInstance().get(Class.class).getAll();
+        classComboBoxModel.removeAllElements();
+        classComboBoxModel.addAll(newClasses);
 
-        var newList = Store.getInstance().get(Class.class).getAll();
-        comboBoxModel.addAll(newList);
+        var newParents = Store.getInstance().get(Parent.class).getAll();
+        parentComboBoxModel.removeAllElements();
+        parentComboBoxModel.addAll(newParents);
 
         if (selectedId != null) {
-            var selected = newList.stream().filter(x -> x.getId() == selectedId).findFirst();
-            if (selected.isPresent()) {
-                classComboBox.setSelectedItem(selected.get());
-            } else if (newList.size() > 0) {
+            var selected = repository.findFirst(x -> x.getId() == selectedId);
+
+            var selectedClass = newClasses.stream().filter(x -> x.getId() == selected.getClassId()).findFirst();
+            if (selectedClass.isPresent()) {
+                classComboBox.setSelectedItem(selectedClass.get());
+            } else if (newClasses.size() > 0) {
                 classComboBox.setSelectedIndex(0);
+            }
+
+            var selectedParent = newParents.stream().filter(x -> x.getId() == selected.getParentId()).findFirst();
+            if (selectedParent.isPresent()) {
+                parentComboBox.setSelectedItem(selectedParent.get());
+            } else if (newClasses.size() > 0) {
+                parentComboBox.setSelectedIndex(0);
             }
         }
     }

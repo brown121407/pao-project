@@ -4,6 +4,7 @@ import com.github.lgooddatepicker.components.DatePicker;
 import xyz._121407.schoolmanagement.entities.Address;
 import xyz._121407.schoolmanagement.entities.User;
 import xyz._121407.schoolmanagement.gui.AddressPicker;
+import xyz._121407.schoolmanagement.gui.ErrorDialog;
 import xyz._121407.schoolmanagement.gui.FormPanel;
 import xyz._121407.schoolmanagement.services.Store;
 
@@ -66,7 +67,7 @@ public abstract class UserForm<T extends User> extends FormPanel<T> {
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Failed to create object. Please check that you filled all the fields correctly.", "Error", JOptionPane.ERROR_MESSAGE);
+                ErrorDialog.show("Failed to create object. Please check that you filled all the fields correctly.", ex);
             }
         });
 

@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 
 public class Main {
     private static final SerializationConfig serializationConfig = SerializationConfig.getInstance();
-    private static final EntityLoader entityLoader = EntityLoader.getInstance();
 
     public static void main(String[] args) {
         try {
@@ -39,18 +38,6 @@ public class Main {
     }
 
     private static void configure() throws IOException {
-        serializationConfig.setDelimiter(";");
-        serializationConfig.setPath(Subject.class, "subjects.csv");
-        serializationConfig.setPath(Profile.class, "profiles.csv");
-        serializationConfig.setPath(Room.class, "rooms.csv");
-        serializationConfig.setPath(Class.class, "classes.csv");
-        serializationConfig.setPath(Address.class, "addresses.csv");
-        serializationConfig.setPath(Student.class, "students.csv");
-        serializationConfig.setPath(Teacher.class, "teachers.csv");
-        serializationConfig.setPath(Parent.class, "parents.csv");
-        serializationConfig.setPath(Log.class, "logs.csv");
-
-//        entityLoader.load();
         Database.scaffold();
     }
 }

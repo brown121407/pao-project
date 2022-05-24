@@ -11,6 +11,13 @@ public class Student extends User {
     @Navigation
     private Class klass;
 
+    @Field
+    @References(table = Parent.class, field = "id")
+    private int parentId;
+
+    @Navigation
+    private Parent parent;
+
     @FieldWriter(field = "classId")
     public int getClassId() {
         return classId;
@@ -28,5 +35,22 @@ public class Student extends User {
     public void setKlass(Class klass) {
         this.klass = klass;
         this.classId = klass.getId();
+    }
+
+    public Parent getParent() {
+        return parent;
+    }
+
+    public void setParent(Parent parent) {
+        this.parent = parent;
+        this.parentId = parent.getId();
+    }
+
+    public int getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(int parentId) {
+        this.parentId = parentId;
     }
 }

@@ -50,6 +50,8 @@ public class Database {
         scaffold(xyz._121407.schoolmanagement.entities.Class.class, connection);
         scaffold(Address.class, connection);
         scaffold(Student.class, connection);
+        scaffold(Teacher.class, connection);
+        scaffold(Parent.class, connection);
     }
 
     public static <T extends Identifiable> void scaffold(Class<T> klass, Connection connection) {
