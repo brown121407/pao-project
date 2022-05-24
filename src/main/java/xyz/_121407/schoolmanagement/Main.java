@@ -38,6 +38,8 @@ public class Main {
     }
 
     private static void configure() throws IOException {
+        SerializationConfig.getInstance().setDelimiter(",");
+        SerializationConfig.getInstance().setPath(Log.class, "logs.csv");
         Database.scaffold();
     }
 }

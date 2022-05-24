@@ -8,6 +8,8 @@ import xyz._121407.schoolmanagement.entities.Identifiable;
 import xyz._121407.schoolmanagement.exceptions.RepositoryException;
 import xyz._121407.schoolmanagement.services.Database;
 import xyz._121407.schoolmanagement.services.Store;
+import xyz._121407.schoolmanagement.services.logging.ActionType;
+import xyz._121407.schoolmanagement.services.logging.Logger;
 import xyz._121407.schoolmanagement.utils.Reflection;
 
 import java.lang.reflect.InvocationTargetException;
@@ -22,6 +24,8 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
     private final Class<T> klass;
     private final List<java.lang.reflect.Field> fields;
     private final List<java.lang.reflect.Field> navigationFields;
+
+    private final Logger logger = Logger.getInstance();
 
     public DBBackedRepository(Class<?> klass) {
         this.klass = (Class<T>) klass;
@@ -84,7 +88,7 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
 
         try (var stmt = connection.createStatement()) {
             var sql = builder.toString();
-            System.out.println(sql);
+            logger.log(ActionType.CREATE, sql);
             stmt.execute(sql);
         } catch (SQLException exception) {
             throw new RepositoryException(exception);
@@ -108,6 +112,7 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
         try (var stmt = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
             var sql = "SELECT * FROM " + klass.getSimpleName();
             System.out.println(sql);
+            logger.log(ActionType.READ, sql);
             var res = stmt.executeQuery(sql);
 
             var count = 0;
@@ -212,7 +217,7 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
         try (var stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, obj.getId());
 
-            System.out.println(sql);
+            logger.log(ActionType.UPDATE, sql);
 
             stmt.executeUpdate();
         } catch (SQLException exception) {
@@ -234,7 +239,7 @@ public class DBBackedRepository<T extends Identifiable> implements IRepository<T
         try (var stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
 
-            System.out.println(sql);
+            logger.log(ActionType.DELETE, sql);
 
             stmt.executeUpdate();
         } catch (SQLException exception) {
