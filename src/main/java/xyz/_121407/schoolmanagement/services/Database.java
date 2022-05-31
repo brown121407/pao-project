@@ -49,9 +49,9 @@ public class Database {
         scaffold(Room.class, connection);
         scaffold(xyz._121407.schoolmanagement.entities.Class.class, connection);
         scaffold(Address.class, connection);
+        scaffold(Parent.class, connection);
         scaffold(Student.class, connection);
         scaffold(Teacher.class, connection);
-        scaffold(Parent.class, connection);
     }
 
     public static <T extends Identifiable> void scaffold(Class<T> klass, Connection connection) {
@@ -110,6 +110,7 @@ public class Database {
 
         try (var statement = connection.createStatement()) {
             statement.execute(tableSql);
+            System.out.println(tableSql);
         } catch (SQLException exception) {
             exception.printStackTrace();
         }
